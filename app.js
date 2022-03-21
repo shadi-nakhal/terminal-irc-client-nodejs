@@ -91,7 +91,6 @@ async function InputParser(data) {
                     .filter((chan) => chan.value.owner === connection.identity)
                     .map((e) => Room.DestroyChannel(e.key));
                 RemoveCon(connection.identity);
-                connection.client.destroy();
                 Room.channelz.children.length > 0;
                 Room.channelz.children[Room.channelz.children.length - 1].submit();
                 Room.changePrompt("");

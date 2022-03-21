@@ -1,3 +1,5 @@
+const Settings = require('../settings')
+
 const { Listener } = require('../Listener')
 
 let Pool = []
@@ -15,15 +17,21 @@ function SpinnConnection(instances){
 
 
 function RemoveCon(identity){
-    Pool.filter(pro => pro.identity === identity)[0].client.removeAllListeners()
-    Pool.filter(pro => pro.identity === identity)[0].client.destroy()
+    let target = Pool.find(pro => pro.identity === identity)
+    clearTimeout(Settings[identity]['timeout'])
+    clearTimeout(Settings[identity]['ping'])
+    clearTimeout(Settings[identity]['connect'])
+    target.connecting = false
+    Settings[identity].PassedMOTD = false
+    target.client.removeAllListeners()
+    if(target.connecting === false) target.client.destroy()
     Pool = Pool.filter(pro => pro.identity !== identity)
 }
 
 
 
 function FindCon(identity){
-    let con = Pool.filter(pro => pro.identity === identity)[0]
+    let con = Pool.find(pro => pro.identity === identity)
     return con
 }
 

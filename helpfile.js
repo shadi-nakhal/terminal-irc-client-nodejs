@@ -30,8 +30,6 @@ let text = `
                     ███▓▓▓▓▒▒ ▒▒▒▒▒▒▒▒▒    ▒▄▓▓████▒
                    ▐███████▓▓▓▒▒▒▓▓▒▓▓▒▓▓▓▓▓▓▓███████
                   ▓███████████▓▓███████████████████▄
----
-asciiart.club
 
 ^yflags:
 ^y-s [server:port] "server and port"
@@ -81,7 +79,7 @@ example2 : /connect [profilename]
 ^yTAB to auto complete a nickname
 
 
-so..yeah press PAGE UP!
+press PAGE UP!
 `
 
 module.exports = {text}
