@@ -63,6 +63,7 @@ example1 : /connect -s irc.libera:6667 -n Fr4nk -c "#javascript"
 example2 : /connect [profilename]
 
 ^R/query
+^R/close
 ^R/join
 ^R/kick
 ^R/ban
