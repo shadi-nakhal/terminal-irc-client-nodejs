@@ -84,7 +84,6 @@ async function InputParser(data) {
                 return;
             case "/close":
                 if (chanbutt?.type === "private") {
-                    console.logger(chanbutt);
                     Settings[chanbutt.owner]["private"][chanbutt.name]["exists"] = false;
                     channelId = chanbutt.owner + "_" + chanbutt.name;
                     Room.channelz.children
@@ -267,14 +266,12 @@ async function onInputSubmit(value) {
                     Room.input.setContent("");
                 }
                 if (chanbutt.type === "private") {
-                    console.logger(chanbutt, "chanbutt");
                     let nickname = Settings[chanbutt.owner].nickname;
                     if (!inputmsg.command)
                         Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^C${nickname}^::${data}\r\n`;
                     if (inputmsg.command) Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^R${data}^\r\n`;
                     Room.Status.setContent(Settings[chanbutt.owner]["private"][chanbutt.name].logs, true, true);
                     Room.Status.scrollToBottom();
-                    console.logger(chanbutt.name, data, "dataaaa");
                     if (!inputmsg.command) connection.client.write(`PRIVMSG ${chanbutt.name} :${data}\r\n`);
                     Room.input.setContent("");
                 }

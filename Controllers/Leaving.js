@@ -28,6 +28,9 @@ function LEAVING(parsed, identity){
             Settings[identity][chan]['chanNicks'] = newlist
             }
         })
+        if(Settings[identity]['private'][leavingNick]){
+            Settings[identity]['private'][leavingNick].logs += "^Y**"+leavingNick+` (${leavingPrefix})`+" has Quit"+` (${leavingMsg})^\r\n`
+        }
         
     }
     if(command === 'KICK'){
