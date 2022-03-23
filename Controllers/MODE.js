@@ -31,7 +31,7 @@ function MODE(parsed, client){
             return obj
         })
         Settings[identity][channel]['chanNicks'] = newlist
-        Settings[identity][channel].logs += `^Y**${opNick} ${givesOrTake} ${modedNick} ${mode}!\r\n^`
+        Settings[identity][channel].logs += `^Y**${opNick} ${givesOrTake} ${modedNick} ${mode}!^\r\n`
     }
 }
 

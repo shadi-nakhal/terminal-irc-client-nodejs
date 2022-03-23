@@ -61,6 +61,7 @@ class Connecting{
 
     CreateSettings(){
         Settings[this.identity] = {
+            private : {},
             identity : this.identity,
             nickname : this.nickname,
             server : this.server,

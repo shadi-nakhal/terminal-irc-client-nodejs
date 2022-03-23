@@ -33,6 +33,12 @@ function ChannelButton(channalButton) {
             Room.ShowRoom();
             Room.Main.scrollToBottom();
         }
+        if (channalButton.type === "private") {
+            Room.Status.setContent(Settings[channalButton.owner]["private"][channalButton.name].logs, true, true);
+            Settings[channalButton.owner]["private"][channalButton.name]["viewed"] = true;
+            Room.ShowStatus();
+            Room.Status.scrollToBottom();
+        }
         Room.input.setContent("");
         Room.changePrompt(Settings[channalButton.owner]?.nickname || "");
     }
@@ -71,9 +77,35 @@ async function InputParser(data) {
                     connection.client.write(`PART ${chanbutt.name}\r\n`);
                     channelId = chanbutt.owner + "_" + chanbutt.name;
                     Room.channelz.children
-                        .filter((btn) => btn.value.type === "server" && btn.value.owner === chanbutt.owner)[0]
+                        .find((btn) => btn.value.type === "server" && btn.value.owner === chanbutt.owner)
                         .submit();
                     Room.DestroyChannel(channelId);
+                }
+                return;
+            case "/close":
+                if (chanbutt?.type === "private") {
+                    console.logger(chanbutt);
+                    Settings[chanbutt.owner]["private"][chanbutt.name]["exists"] = false;
+                    channelId = chanbutt.owner + "_" + chanbutt.name;
+                    Room.channelz.children
+                        .find((btn) => btn.value.type === "server" && btn.value.owner === chanbutt.owner)
+                        .submit();
+                    Room.DestroyChannel(channelId);
+                }
+                return;
+            case "/query":
+                nick = incoming[1];
+                if (nick && notFrankenstein) {
+                    if (!Settings[chanbutt.owner]["private"]) Settings[chanbutt.owner]["private"] = {};
+                    if (!Settings[chanbutt.owner]["private"][nick]) Settings[chanbutt.owner]["private"][nick] = {};
+                    if (!Settings[chanbutt.owner]["private"][nick].exists) {
+                        Room.GenerateChannels({ name: nick, type: "private", owner: chanbutt.owner });
+                        if (!Settings[chanbutt.owner]["private"][nick].logs)
+                            Settings[chanbutt.owner]["private"][nick].logs = "";
+                        Settings[chanbutt.owner]["private"][nick].exists = true;
+                    }
+                    Room.channelz.children
+                        .find((btn) => btn.value.type === "private" && btn.value.name === nick).submit()
                 }
                 return;
             case "/join":
@@ -150,6 +182,16 @@ function update() {
             let rnparse = data.split("\r\n");
             for (let raw of rnparse) {
                 let parsed = parser(raw, connection.identity);
+                if (parsed.command === "PRIVMSG" && parsed.params[0] === Settings[parsed.identity].nickname) {
+                    let otherNick = parsed.raw.split(":")[1].split("!")[0];
+                    if (!Settings[parsed.identity]["private"][otherNick]["exists"]) {
+                        Room.GenerateChannels({ name: otherNick, type: "private", owner: parsed.identity });
+                        Settings[parsed.identity]["private"][otherNick]["exists"] = true;
+                    }
+                    Settings[parsed.identity]["private"][otherNick]["viewed"] = false;
+                    Room.channelz.itemsDef.find(e => e.id === parsed.identity+"_"+otherNick).content = `^m${otherNick}^`
+                    Room.channelz.onParentResize()
+                }
                 if (chanbutt?.type === "server") {
                     Room.Status.setContent(Settings[chanbutt.owner].status, true, true);
                     Room.Status.scrollToBottom();
@@ -158,6 +200,11 @@ function update() {
                     Room.Main.setContent(Settings[chanbutt.owner][chanbutt.name]?.logs, true, true);
                     Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
                     Room.Main.scrollToBottom();
+                }
+                if (chanbutt.type === "private") {
+                    Room.Status.setContent(Settings[chanbutt.owner]["private"][chanbutt.name].logs, true, true);
+                    Settings[chanbutt.owner]["private"][chanbutt.name]["viewed"] = true;
+                    Room.Status.scrollToBottom();
                 }
                 Room.changePrompt(Settings[chanbutt?.owner]?.nickname || "");
             }
@@ -204,7 +251,8 @@ async function onInputSubmit(value) {
             if (connection?.identity === chanbutt.owner && value) {
                 if (chanbutt.type === "channel") {
                     let nickname = Settings[chanbutt.owner].nickname;
-                    if (!inputmsg.command) Settings[chanbutt.owner][chanbutt.name].logs += `^C${nickname}^::${data}\r\n`;
+                    if (!inputmsg.command)
+                        Settings[chanbutt.owner][chanbutt.name].logs += `^C${nickname}^::${data}\r\n`;
                     if (inputmsg.command) Settings[chanbutt.owner][chanbutt.name].logs += `^R${data}^\r\n`;
                     Room.Main.setContent(Settings[chanbutt.owner][chanbutt.name].logs, true, true);
                     Room.Main.scrollToBottom();
@@ -216,6 +264,18 @@ async function onInputSubmit(value) {
                     Room.Status.setContent(Settings[chanbutt.owner].status, true, true);
                     Room.Status.scrollToBottom();
                     if (!inputmsg.command) connection.client.write(data + "\r\n");
+                    Room.input.setContent("");
+                }
+                if (chanbutt.type === "private") {
+                    console.logger(chanbutt, "chanbutt");
+                    let nickname = Settings[chanbutt.owner].nickname;
+                    if (!inputmsg.command)
+                        Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^C${nickname}^::${data}\r\n`;
+                    if (inputmsg.command) Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^R${data}^\r\n`;
+                    Room.Status.setContent(Settings[chanbutt.owner]["private"][chanbutt.name].logs, true, true);
+                    Room.Status.scrollToBottom();
+                    console.logger(chanbutt.name, data, "dataaaa");
+                    if (!inputmsg.command) connection.client.write(`PRIVMSG ${chanbutt.name} :${data}\r\n`);
                     Room.input.setContent("");
                 }
             }

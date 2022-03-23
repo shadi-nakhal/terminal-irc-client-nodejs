@@ -46,7 +46,7 @@ function HandleFs(config) {
                           return rej("server not found")
                         }
                     }
-                    let newData = JSON.stringify(newjsonFile);
+                    let newData = JSON.stringify(newjsonFile, null, 2);
                     fs.writeFile("mynewfile1.json", newData, (err) => {
                         if (err) rej(err)
                     });

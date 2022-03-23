@@ -35,7 +35,6 @@ function CHANGEDNICK(parsed, identity) {// on NICK command
                 return obj;
             });
             Settings[identity][element].logs += `^Y**${nickname} is now known as ${parsed.params[0]}^\r\n`;
-        console.logger(element)
         }
     });
 
