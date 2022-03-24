@@ -1,5 +1,5 @@
 
-let chars = '@%&+_.()#^-=01234567989abcdefghijklmnopqrstuvwxyz'
+let chars = '@%&+_.()#`\'^-=01234567989abcdefghijklmnopqrstuvwxyz'
 function NickSorter(list){
     let array = list.map(obj => {
         if(obj.prefix){
