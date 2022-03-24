@@ -4,18 +4,21 @@ const Settings = require('../settings')
 
 
 function PRIVMSG(parsed, client){
-
+    let senderNickname = parsed.raw.split(":")[1].split("!")[0]
+    if(senderNickname.includes('^')){
+        senderNickname = senderNickname.replace('^', '^^')
+    }
     if(parsed.params[0][0] === '#'){
         let ownNick = Settings[parsed.identity].nickname
-        let senderNickname = parsed.prefix.split("!")[0]
-        let msgArray = parsed.params.slice(1)
-        let msg = msgArray.join(" ")
-        let regex = new RegExp(ownNick, "i")
         let channelsname = parsed.params[0].toLowerCase()
-        if(regex.test(msg)) {
-            msg = msg.replace(regex, nick => `^C${nick}`)
-            Settings[parsed.identity][channelsname]["mentioned"] = true;
-        }
+        let msgArray = parsed.params.slice(1).map(element => {
+            if(element.toLowerCase() === ownNick.toLowerCase()){
+                Settings[parsed.identity][channelsname]["mentioned"] = true;
+                return element =`^C${element}^`
+            }return element
+        });
+        let msg = msgArray.join(" ")
+
         Settings[parsed.identity][channelsname].logs += `^m${senderNickname}^::${msg}\r\n`
     }
     if(parsed.params[1] == '\x01VERSION\x01'){
@@ -24,11 +27,14 @@ function PRIVMSG(parsed, client){
         client.write(`PRIVMSG ${senderNickname} :\u0001VERSION\u0001\r\n`)
     } 
     if(parsed.params[0] === Settings[parsed.identity].nickname){
-        let otherNick = parsed.raw.split(":")[1].split("!")[0]
+        let senderNickname = parsed.raw.split(":")[1].split("!")[0]
+        let displayedNick = parsed.raw.split(":")[1].split("!")[0]
+        if(displayedNick.includes('^')) displayedNick = displayedNick.replace('^', '^^')
         if(!Settings[parsed.identity]['private']) Settings[parsed.identity]['private'] = {}
-        if(!Settings[parsed.identity]['private'][otherNick]) Settings[parsed.identity]['private'][otherNick] = {}
-        if(!Settings[parsed.identity]['private'][otherNick].logs) Settings[parsed.identity]['private'][otherNick].logs = ""
-        Settings[parsed.identity]['private'][otherNick].logs += `^m${otherNick}^::${parsed.params.slice(1).join(" ")}\r\n`
+        if(!Settings[parsed.identity]['private'][senderNickname]) Settings[parsed.identity]['private'][senderNickname] = {}
+        if(!Settings[parsed.identity]['private'][senderNickname].logs) Settings[parsed.identity]['private'][senderNickname].logs = ""
+        Settings[parsed.identity]['private'][senderNickname].logs += `^m${displayedNick}^::${parsed.params.slice(1).join(" ")}\r\n`
+
     }
 
 }

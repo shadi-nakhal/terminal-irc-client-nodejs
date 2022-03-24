@@ -261,15 +261,20 @@ function update() {
 async function onInputSubmit(value) {
     let inputmsg = await InputParser(value);
     try {
-        let data;
-        if (inputmsg && inputmsg.data) data = await inputmsg.data;
+        let data, escapedData
+        if (inputmsg && inputmsg.data){
+            data = await inputmsg.data
+            escapedData = data
+            if(data.includes('^')) escapedData = data.replace('^', '^^')
+        }
         if (chanbutt && inputmsg) {
             let connection = FindCon(chanbutt.owner);
             if (connection?.identity === chanbutt.owner && value) {
                 if (chanbutt.type === "channel") {
                     let nickname = Settings[chanbutt.owner].nickname;
+                    if(nickname.includes('^')) nickname = nickname.replace('^', '^^')
                     if (!inputmsg.command)
-                        Settings[chanbutt.owner][chanbutt.name].logs += `^C${nickname}^::${data}\r\n`;
+                        Settings[chanbutt.owner][chanbutt.name].logs += `^C${nickname}^::${escapedData}\r\n`;
                     if (inputmsg.command) Settings[chanbutt.owner][chanbutt.name].logs += `^R${data}^\r\n`;
                     Room.Main.setContent(Settings[chanbutt.owner][chanbutt.name].logs, true, true);
                     Room.Main.scrollToBottom();
@@ -285,8 +290,9 @@ async function onInputSubmit(value) {
                 }
                 if (chanbutt.type === "private") {
                     let nickname = Settings[chanbutt.owner].nickname;
+                    if(nickname.includes('^')) nickname = nickname.replace('^', '^^')
                     if (!inputmsg.command)
-                        Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^C${nickname}^::${data}\r\n`;
+                        Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^C${nickname}^::${escapedData}\r\n`;
                     if (inputmsg.command) Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^R${data}^\r\n`;
                     Room.Status.setContent(Settings[chanbutt.owner]["private"][chanbutt.name].logs, true, true);
                     Room.Status.scrollToBottom();

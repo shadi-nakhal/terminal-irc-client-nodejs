@@ -139,6 +139,7 @@ class Rooms {
         term.styleReset();
     };
     changePrompt = (text) => {
+        if(text.includes('^')) text = text.replace('^', '^^')
         let newprompt = text + ": ";
         this.input.promptTextBox.setContent("^C" + newprompt + "^:", true);
         let size = this.input.promptTextBox.getContentSize();
