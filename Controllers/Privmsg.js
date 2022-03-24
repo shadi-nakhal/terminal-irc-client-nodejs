@@ -11,9 +11,12 @@ function PRIVMSG(parsed, client){
         let msgArray = parsed.params.slice(1)
         let msg = msgArray.join(" ")
         let regex = new RegExp(ownNick, "i")
-        let message = regex.test(msg) ? msg.replace(regex, nick => `^C${nick}`) : msg
         let channelsname = parsed.params[0].toLowerCase()
-        Settings[parsed.identity][channelsname].logs += `^m${senderNickname}^::${message}\r\n`
+        if(regex.test(msg)) {
+            msg = msg.replace(regex, nick => `^C${nick}`)
+            Settings[parsed.identity][channelsname]["mentioned"] = true;
+        }
+        Settings[parsed.identity][channelsname].logs += `^m${senderNickname}^::${msg}\r\n`
     }
     if(parsed.params[1] == '\x01VERSION\x01'){
         let senderNickname = parsed.prefix.split("!")[0]

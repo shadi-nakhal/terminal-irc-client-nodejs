@@ -31,6 +31,7 @@ function ChannelButton(channalButton) {
             Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
             Room.Main.setContent(Settings[channalButton.owner][channalButton.name].logs, true, true);
             Settings[channalButton.owner][channalButton.name]["viewed"] = true;
+            Settings[channalButton.owner][channalButton.name]["mentioned"] = false
             Room.ShowRoom();
             Room.Main.scrollToBottom();
         }
@@ -198,11 +199,14 @@ function update() {
                     }
                     if (parsed.params[0][0] === "#") {
                         let channel = parsed.params[0].toLowerCase();
+                        let content = `^m${parsed.params[0]}^`
+                        if(Settings[parsed.identity][channel]["mentioned"]) content = `^C${parsed.params[0]}^`
                         Settings[parsed.identity][channel]["viewed"] = false;
                         Room.channelz.itemsDef.find(
                             (e) => e.id === parsed.identity + "_" + channel
-                        ).content = `^m${parsed.params[0]}^`;
+                        ).content = content ;
                         Room.channelz.onParentResize();
+
                     }
                 }
                 if (chanbutt?.type === "server") {
