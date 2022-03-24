@@ -15,7 +15,7 @@ function LEAVING(parsed, identity){
             return obj.nickname !== leavingNick
         })
         Settings[identity][channel]['chanNicks'] = newlist
-        if(!leavingNick === ownNick) Settings[identity][channel].logs += "^Y**"+leavingNick+` (${leavingPrefix})`+" has left^\r\n"
+        if(leavingNick !== ownNick) Settings[identity][channel].logs += "^Y**"+leavingNick+` (${leavingPrefix})`+" has left^\r\n"
     }
     if(command === 'QUIT'){
         let channelsList = Settings[identity].joinedChans // finding the joined channels

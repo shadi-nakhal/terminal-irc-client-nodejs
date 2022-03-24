@@ -30,6 +30,7 @@ function ChannelButton(channalButton) {
         if (channalButton.type === "channel") {
             Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
             Room.Main.setContent(Settings[channalButton.owner][channalButton.name].logs, true, true);
+            Settings[channalButton.owner][channalButton.name]["viewed"] = true;
             Room.ShowRoom();
             Room.Main.scrollToBottom();
         }
@@ -104,7 +105,8 @@ async function InputParser(data) {
                         Settings[chanbutt.owner]["private"][nick].exists = true;
                     }
                     Room.channelz.children
-                        .find((btn) => btn.value.type === "private" && btn.value.name === nick).submit()
+                        .find((btn) => btn.value.type === "private" && btn.value.name === nick)
+                        .submit();
                 }
                 return;
             case "/join":
@@ -181,15 +183,27 @@ function update() {
             let rnparse = data.split("\r\n");
             for (let raw of rnparse) {
                 let parsed = parser(raw, connection.identity);
-                if (parsed.command === "PRIVMSG" && parsed.params[0] === Settings[parsed.identity].nickname) {
-                    let otherNick = parsed.raw.split(":")[1].split("!")[0];
-                    if (!Settings[parsed.identity]["private"][otherNick]["exists"]) {
-                        Room.GenerateChannels({ name: otherNick, type: "private", owner: parsed.identity });
-                        Settings[parsed.identity]["private"][otherNick]["exists"] = true;
+                if (parsed.command === "PRIVMSG") {
+                    if (parsed.params[0] === Settings[parsed.identity].nickname) {
+                        let otherNick = parsed.raw.split(":")[1].split("!")[0];
+                        if (!Settings[parsed.identity]["private"][otherNick]["exists"]) {
+                            Room.GenerateChannels({ name: otherNick, type: "private", owner: parsed.identity });
+                            Settings[parsed.identity]["private"][otherNick]["exists"] = true;
+                        }
+                        Settings[parsed.identity]["private"][otherNick]["viewed"] = false;
+                        Room.channelz.itemsDef.find(
+                            (e) => e.id === parsed.identity + "_" + otherNick
+                        ).content = `^m${otherNick}^`;
+                        Room.channelz.onParentResize();
                     }
-                    Settings[parsed.identity]["private"][otherNick]["viewed"] = false;
-                    Room.channelz.itemsDef.find(e => e.id === parsed.identity+"_"+otherNick).content = `^m${otherNick}^`
-                    Room.channelz.onParentResize()
+                    if (parsed.params[0][0] === "#") {
+                        let channel = parsed.params[0].toLowerCase();
+                        Settings[parsed.identity][channel]["viewed"] = false;
+                        Room.channelz.itemsDef.find(
+                            (e) => e.id === parsed.identity + "_" + channel
+                        ).content = `^m${parsed.params[0]}^`;
+                        Room.channelz.onParentResize();
+                    }
                 }
                 if (chanbutt?.type === "server") {
                     Room.Status.setContent(Settings[chanbutt.owner].status, true, true);

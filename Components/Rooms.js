@@ -196,7 +196,7 @@ class Rooms {
         restOfChannels.map((e) => {
             if (e.value.type === "server") e.content = `^B${e.value.name}^`;
             if (e.value.type === "Frankenstein") e.content = `^y${e.value.name}^`;
-            if (e.value.type === "channel") e.content = e.value.name;
+            if (e.value.type === "channel" && Settings[e.value.owner][e.value.name]["viewed"]) e.content = e.value.name;
             if (e.value.type === "private" && Settings[e.value.owner]["private"][e.value.name]["viewed"])
                 e.content = e.value.name;
         });
