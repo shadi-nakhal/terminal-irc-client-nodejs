@@ -2,9 +2,6 @@
 
 const Settings = require('../settings')
 
-let timeout = {}
-
-
 function PING(parsed, params, client){ // repling pings
     if(parsed.command === 'PING') client.write(`PONG ${params}\r\n`)
     if(parsed.command === 'PONG'){
