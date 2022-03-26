@@ -32,7 +32,7 @@ function MODE(parsed, client){
             return obj
         })
         Settings[identity][channel]['chanNicks'] = newlist
-        Settings[identity][channel].logs += `^Y**${EscapeCarets(opNick)} ${givesOrTake} ${modedNick}'s ${mode}!^\r\n`
+        Settings[identity][channel].logs += `^Y**${EscapeCarets(opNick)} ${givesOrTake} ${EscapeCarets(modedNick)}'s ${mode}!^\r\n`
     }
 }
 
