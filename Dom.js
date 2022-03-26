@@ -69,7 +69,6 @@ term.on("key", function (key) {
     let main = document.elements.main.children.filter((e) => !e.hidden)[0];
     main.scroll(0, -Math.ceil(main.textAreaHeight / 5));
   }
-  console.logger(Settings.buttonIndex, "before dom")
 
   if (key === "ALT_A" || key === 'á' || key === 'Á' || key === "ALT_SHIFT_A") {
     term.hideCursor(true);
