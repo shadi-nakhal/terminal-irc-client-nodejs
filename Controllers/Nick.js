@@ -1,4 +1,5 @@
 const Settings = require("../settings");
+const { EscapeCarets } = require("../Helpers/EscapeCarets")
 
 function NICKNAMEINUSE(client, parsed, ident) {
     //ERR_NICKNAMEINUSE (433)
@@ -22,7 +23,8 @@ function NICKNAMEINUSE(client, parsed, ident) {
 }
 
 function CHANGEDNICK(parsed, identity) {// on NICK command
-    let nickname = parsed.prefix.split("!")[0];
+    let nickname = parsed.prefix.split("!")[0]
+    let newNick = parsed.params[0]
     if (Settings[identity].nickname === nickname) {
         nickname = Settings[identity].nickname;
         Settings[identity].prefix = parsed.params[0] + "!" + parsed.params[1];
@@ -34,12 +36,9 @@ function CHANGEDNICK(parsed, identity) {// on NICK command
                 if (obj.nickname === nickname) return { ...obj, nickname: parsed.params[0] };
                 return obj;
             });
-            Settings[identity][element].logs += `^Y**${nickname} is now known as ${parsed.params[0]}^\r\n`;
+            Settings[identity][element].logs += `^Y**${EscapeCarets(nickname)} is now known as ${EscapeCarets(newNick)}^\r\n`;
         }
     });
-
-    // client.write(`NAMES ${incomingChannel} \r\n`)
-
 }
 
 module.exports = { NICKNAMEINUSE, CHANGEDNICK };

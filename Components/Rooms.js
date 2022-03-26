@@ -194,13 +194,13 @@ class Rooms {
         let clickedChannel = this.channelz.itemsDef.find((e) => e.id === value.owner + "_" + value.name);
         let loadedChannel = this.channelz.itemsDef.find((e) => e.id === value.owner + "_" + value.name);
         let restOfChannels = this.channelz.itemsDef.filter((e) => e.id !== value.owner + "_" + value.name);
-        if (clickedChannel) clickedChannel.content = `^G>${value.name}^`;
+        if (clickedChannel) clickedChannel.content = `^G>${value.name.replaceAll("^","^^")}^`;
         restOfChannels.map((e) => {
             if (e.value.type === "server") e.content = `^B${e.value.name}^`;
             if (e.value.type === "Frankenstein") e.content = `^y${e.value.name}^`;
             if (e.value.type === "channel" && Settings[e.value.owner][e.value.name]["viewed"]) e.content = e.value.name;
             if (e.value.type === "private" && Settings[e.value.owner]["private"][e.value.name]["viewed"])
-                e.content = e.value.name;
+                e.content = e.value.name.replaceAll("^","^^");
         });
         this.channelz.onParentResize();
         Settings.buttonIndex = this.channelz.itemsDef.indexOf(loadedChannel)

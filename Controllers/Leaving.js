@@ -1,4 +1,6 @@
 const Settings = require('../settings')
+const { EscapeCarets } = require("../Helpers/EscapeCarets")
+
 
 function LEAVING(parsed, identity){
     let command = parsed.command
@@ -15,13 +17,13 @@ function LEAVING(parsed, identity){
             return obj.nickname !== leavingNick
         })
         Settings[identity][channel]['chanNicks'] = newlist
-        if(leavingNick !== ownNick) Settings[identity][channel].logs += "^Y**"+leavingNick+` (${leavingPrefix})`+" has left^\r\n"
+        if(leavingNick !== ownNick) Settings[identity][channel].logs += "^Y**"+EscapeCarets(leavingNick)+` (${EscapeCarets(leavingPrefix)})`+" has left^\r\n"
     }
     if(command === 'QUIT'){
         let channelsList = Settings[identity].joinedChans // finding the joined channels
         channelsList.map(chan => {
             if(Settings[identity][chan]['chanNicks'].some(nick => nick.nickname === leavingNick)){
-            Settings[identity][chan.toLowerCase()].logs += "^Y**"+leavingNick+` (${leavingPrefix})`+" has Quit"+` (${leavingMsg})^\r\n`
+            Settings[identity][chan.toLowerCase()].logs += "^Y**"+EscapeCarets(leavingNick)+` (${EscapeCarets(leavingPrefix)})`+" has Quit"+` (${EscapeCarets(leavingMsg)})^\r\n`
             let newlist = Settings[identity][chan.toLowerCase()]['chanNicks'].filter(obj => {
                 return obj.nickname !== leavingNick
             })
@@ -29,7 +31,7 @@ function LEAVING(parsed, identity){
             }
         })
         if(Settings[identity]['private'][leavingNick]){
-            Settings[identity]['private'][leavingNick].logs += "^Y**"+leavingNick+` (${leavingPrefix})`+" has Quit"+` (${leavingMsg})^\r\n`
+            Settings[identity]['private'][leavingNick].logs += "^Y**"+EscapeCarets(leavingNick)+` (${EscapeCarets(leavingPrefix)})`+" has Quit"+` (${EscapeCarets(leavingMsg)})^\r\n`
         }
         
     }
@@ -39,7 +41,7 @@ function LEAVING(parsed, identity){
         let message = parsed.params[2] 
         if(nickname === Settings[identity].nickname){
             Settings[identity][channel]['chanNicks'] = []
-            Settings[identity][channel].logs += `^R**"${leavingNick} has kicked you ${message}^\r\n`
+            Settings[identity][channel].logs += `^R**"${EscapeCarets(leavingNick)} has kicked you ${EscapeCarets(message)}^\r\n`
             return
         }
         let newlist = Settings[identity][channel]['chanNicks'].filter(obj => {
@@ -47,7 +49,7 @@ function LEAVING(parsed, identity){
         })
     
         Settings[identity][channel]['chanNicks'] = newlist
-        Settings[identity][channel].logs += `^Y**"${leavingNick} has kicked ${nickname} ${message}^\r\n`
+        Settings[identity][channel].logs += `^Y**"${EscapeCarets(leavingNick)} has kicked ${EscapeCarets(nickname)} ${message}^\r\n`
     }
 }
 

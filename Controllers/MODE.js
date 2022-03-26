@@ -1,4 +1,5 @@
 const Settings = require('../settings');
+const { EscapeCarets } = require("../Helpers/EscapeCarets")
 
 function MODE(parsed, client){
     if(parsed.params.length > 2 && (parsed.params[0][0] === '#' || parsed.params[0][0] === '&')){
@@ -31,7 +32,7 @@ function MODE(parsed, client){
             return obj
         })
         Settings[identity][channel]['chanNicks'] = newlist
-        Settings[identity][channel].logs += `^Y**${opNick} ${givesOrTake} ${modedNick}'s ${mode}!^\r\n`
+        Settings[identity][channel].logs += `^Y**${EscapeCarets(opNick)} ${givesOrTake} ${modedNick}'s ${mode}!^\r\n`
     }
 }
 

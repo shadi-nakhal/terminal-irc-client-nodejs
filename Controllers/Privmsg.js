@@ -1,13 +1,10 @@
-
-
 const Settings = require('../settings')
+const { EscapeCarets } = require("../Helpers/EscapeCarets")
 
 
 function PRIVMSG(parsed, client){
     let senderNickname = parsed.raw.split(":")[1].split("!")[0]
-    if(senderNickname.includes('^')){
-        senderNickname = senderNickname.replace('^', '^^')
-    }
+
     if(parsed.params[0][0] === '#'){
         let ownNick = Settings[parsed.identity].nickname
         let channelsname = parsed.params[0].toLowerCase()
@@ -19,7 +16,7 @@ function PRIVMSG(parsed, client){
         });
         let msg = msgArray.join(" ")
 
-        Settings[parsed.identity][channelsname].logs += `^m${senderNickname}^::${msg}\r\n`
+        Settings[parsed.identity][channelsname].logs += `^m${EscapeCarets(senderNickname)}^::${EscapeCarets(msg)}\r\n`
     }
     if(parsed.params[1] == '\x01VERSION\x01'){
         let senderNickname = parsed.prefix.split("!")[0]
@@ -28,12 +25,11 @@ function PRIVMSG(parsed, client){
     } 
     if(parsed.params[0] === Settings[parsed.identity].nickname){
         let senderNickname = parsed.raw.split(":")[1].split("!")[0]
-        let displayedNick = parsed.raw.split(":")[1].split("!")[0]
-        if(displayedNick.includes('^')) displayedNick = displayedNick.replace('^', '^^')
+        let msg = parsed.params.slice(1).join(" ")
         if(!Settings[parsed.identity]['private']) Settings[parsed.identity]['private'] = {}
         if(!Settings[parsed.identity]['private'][senderNickname]) Settings[parsed.identity]['private'][senderNickname] = {}
         if(!Settings[parsed.identity]['private'][senderNickname].logs) Settings[parsed.identity]['private'][senderNickname].logs = ""
-        Settings[parsed.identity]['private'][senderNickname].logs += `^m${displayedNick}^::${parsed.params.slice(1).join(" ")}\r\n`
+        Settings[parsed.identity]['private'][senderNickname].logs += `^m${EscapeCarets(senderNickname)}^::${EscapeCarets(msg)}\r\n`
 
     }
 
