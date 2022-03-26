@@ -270,8 +270,8 @@ async function onInputSubmit(value) {
         }
         if (chanbutt && inputmsg) {
             let connection = FindCon(chanbutt.owner);
-            let nickname = Settings[chanbutt.owner].nickname
             if (connection?.identity === chanbutt.owner && value) {
+                let nickname = Settings[chanbutt.owner].nickname
                 if (chanbutt.type === "channel") {
                     if (!inputmsg.command)
                         Settings[chanbutt.owner][chanbutt.name].logs += `^C${EscapeCarets(nickname)}^::${EscapeCarets(data)}\r\n`;
