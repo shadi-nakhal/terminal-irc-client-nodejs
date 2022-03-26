@@ -199,9 +199,10 @@ function update() {
                     }
                     if (parsed.params[0][0] === "#") {
                         let channel = parsed.params[0].toLowerCase();
-                        let content = `^m${parsed.params[0]}^`;
-                        let viewed = !(chanbutt.owner === parsed.identity, chanbutt.name === channel);
-                        if (Settings[parsed.identity][channel]["mentioned"]) content = `^C${parsed.params[0]}^`;
+                        let viewed = (chanbutt.owner === parsed.identity && chanbutt.name === channel);
+                        let content = viewed ? `^m>${parsed.params[0]}^` : `^m${parsed.params[0]}^`;
+                        if (Settings[parsed.identity][channel]["mentioned"])
+                            content = viewed ? `^C>${parsed.params[0]}^` : `^C${parsed.params[0]}^`;
                         Settings[parsed.identity][channel]["viewed"] = viewed;
                         Room.channelz.itemsDef.find((e) => e.id === parsed.identity + "_" + channel).content = content;
                         Room.channelz.onParentResize();
