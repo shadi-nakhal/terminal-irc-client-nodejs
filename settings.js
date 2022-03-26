@@ -6,6 +6,7 @@ let Settings = {
     realname : "Frankenstein",
     ChanNicknames : [],
     port : 6667,
+    buttonIndex : 0
 }
 
 module.exports = Settings

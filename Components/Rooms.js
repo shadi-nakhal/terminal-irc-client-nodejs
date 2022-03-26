@@ -45,7 +45,7 @@ class Rooms {
             items: [
                 {
                     content: "^yFrankenstein^",
-                    value: { name: "Frankenstein", id: "Frankenstein", type: "Frankenstein", owner: "Frankenstein" },
+                    value: { name: "Frankenstein", id: "Frankenstein_Frankenstein", type: "Frankenstein", owner: "Frankenstein" },
                     focusAttr: { bgColor: "@light-gray", bold: true },
                     contentHasMarkup: true,
                     blurAttr: { bgColor: "@light-gray", bold: false },
@@ -192,6 +192,7 @@ class Rooms {
 
     Submittion = (value) => {
         let clickedChannel = this.channelz.itemsDef.find((e) => e.id === value.owner + "_" + value.name);
+        let loadedChannel = this.channelz.itemsDef.find((e) => e.id === value.owner + "_" + value.name);
         let restOfChannels = this.channelz.itemsDef.filter((e) => e.id !== value.owner + "_" + value.name);
         if (clickedChannel) clickedChannel.content = `^G>${value.name}^`;
         restOfChannels.map((e) => {
@@ -202,6 +203,7 @@ class Rooms {
                 e.content = e.value.name;
         });
         this.channelz.onParentResize();
+        Settings.buttonIndex = this.channelz.itemsDef.indexOf(loadedChannel)
     };
 
     DestroyChannel = (leftchanID) => {

@@ -31,7 +31,7 @@ function ChannelButton(channalButton) {
             Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
             Room.Main.setContent(Settings[channalButton.owner][channalButton.name].logs, true, true);
             Settings[channalButton.owner][channalButton.name]["viewed"] = true;
-            Settings[channalButton.owner][channalButton.name]["mentioned"] = false
+            Settings[channalButton.owner][channalButton.name]["mentioned"] = false;
             Room.ShowRoom();
             Room.Main.scrollToBottom();
         }
@@ -199,14 +199,12 @@ function update() {
                     }
                     if (parsed.params[0][0] === "#") {
                         let channel = parsed.params[0].toLowerCase();
-                        let content = `^m${parsed.params[0]}^`
-                        if(Settings[parsed.identity][channel]["mentioned"]) content = `^C${parsed.params[0]}^`
-                        Settings[parsed.identity][channel]["viewed"] = false;
-                        Room.channelz.itemsDef.find(
-                            (e) => e.id === parsed.identity + "_" + channel
-                        ).content = content ;
+                        let content = `^m${parsed.params[0]}^`;
+                        let viewed = !(chanbutt.owner === parsed.identity, chanbutt.name === channel);
+                        if (Settings[parsed.identity][channel]["mentioned"]) content = `^C${parsed.params[0]}^`;
+                        Settings[parsed.identity][channel]["viewed"] = viewed;
+                        Room.channelz.itemsDef.find((e) => e.id === parsed.identity + "_" + channel).content = content;
                         Room.channelz.onParentResize();
-
                     }
                 }
                 if (chanbutt?.type === "server") {
@@ -261,18 +259,18 @@ function update() {
 async function onInputSubmit(value) {
     let inputmsg = await InputParser(value);
     try {
-        let data, escapedData
-        if (inputmsg && inputmsg.data){
-            data = await inputmsg.data
-            escapedData = data
-            if(data.includes('^')) escapedData = data.replace('^', '^^')
+        let data, escapedData;
+        if (inputmsg && inputmsg.data) {
+            data = await inputmsg.data;
+            escapedData = data;
+            if (data.includes("^")) escapedData = data.replace("^", "^^");
         }
         if (chanbutt && inputmsg) {
             let connection = FindCon(chanbutt.owner);
             if (connection?.identity === chanbutt.owner && value) {
                 if (chanbutt.type === "channel") {
                     let nickname = Settings[chanbutt.owner].nickname;
-                    if(nickname.includes('^')) nickname = nickname.replace('^', '^^')
+                    if (nickname.includes("^")) nickname = nickname.replace("^", "^^");
                     if (!inputmsg.command)
                         Settings[chanbutt.owner][chanbutt.name].logs += `^C${nickname}^::${escapedData}\r\n`;
                     if (inputmsg.command) Settings[chanbutt.owner][chanbutt.name].logs += `^R${data}^\r\n`;
@@ -290,7 +288,7 @@ async function onInputSubmit(value) {
                 }
                 if (chanbutt.type === "private") {
                     let nickname = Settings[chanbutt.owner].nickname;
-                    if(nickname.includes('^')) nickname = nickname.replace('^', '^^')
+                    if (nickname.includes("^")) nickname = nickname.replace("^", "^^");
                     if (!inputmsg.command)
                         Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^C${nickname}^::${escapedData}\r\n`;
                     if (inputmsg.command) Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^R${data}^\r\n`;

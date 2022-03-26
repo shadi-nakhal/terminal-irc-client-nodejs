@@ -6,7 +6,7 @@ function MODE(parsed, client){
         let nicksDictionary = {'v' : '+','O' : '@', 'o' : '@', 'h' : '%', 'a' : '&', 'q' : '~'}
         let parsedMode = parsed.params[1]
         let givesOrTake = messageDictionary[parsedMode[0]] || 'given'
-        let mode = messageDictionary[parsedMode[1]] || 'shit'
+        let mode = messageDictionary[parsedMode[1]] || 'a lolipop'
         let length = parsed.params.length -1
         let channel = parsed.params[0].toLowerCase()
         let identity = parsed.identity
@@ -31,7 +31,7 @@ function MODE(parsed, client){
             return obj
         })
         Settings[identity][channel]['chanNicks'] = newlist
-        Settings[identity][channel].logs += `^Y**${opNick} ${givesOrTake} ${modedNick} ${mode}!^\r\n`
+        Settings[identity][channel].logs += `^Y**${opNick} ${givesOrTake} ${modedNick}'s ${mode}!^\r\n`
     }
 }
 

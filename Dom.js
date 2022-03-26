@@ -16,7 +16,7 @@ term.fullscreen(true);
 term.windowTitle("Frankenstein");
 term.hideCursor(true);
 
-let counting = 0;
+// let Settings.buttonIndex = Settings.buttonIndex
 let whoIsFirst = "";
 let tabcount = 0
 let charsToBeGuessed
@@ -69,32 +69,23 @@ term.on("key", function (key) {
     let main = document.elements.main.children.filter((e) => !e.hidden)[0];
     main.scroll(0, -Math.ceil(main.textAreaHeight / 5));
   }
-  
+  console.logger(Settings.buttonIndex, "before dom")
+
   if (key === "ALT_A" || key === 'á' || key === 'Á' || key === "ALT_SHIFT_A") {
     term.hideCursor(true);
-    if (whoIsFirst !== "ALT_A") counting += 1;
-    whoIsFirst = "ALT_A";
+    Settings.buttonIndex++;
     let arr = document.elements.channelz.children;
     let length = document.elements.channelz.children.length;
-    if (counting >= length) counting = 0;
-    if (counting <= length) document.elements.inlineInput.disabled = false;
-    // if (arr[counting]) document.giveFocusTo(arr[counting]);
-    if (arr[counting]) arr[counting].submit()
-
-    ++counting;
+    if (Settings.buttonIndex >= length ) Settings.buttonIndex = 0;
+    if (arr[Settings.buttonIndex]) arr[Settings.buttonIndex].submit()
   }
   if (key === "ALT_Q" || key === 'ñ' || key === 'Ñ' || key === "ALT_SHIFT_Q") {
     term.hideCursor(true);
-    if (whoIsFirst !== "ALT_Q") counting -= 1;
-    whoIsFirst = "ALT_Q";
+    Settings.buttonIndex--;
     let arr = document.elements.channelz.children;
     let length = document.elements.channelz.children.length;
-    if (counting <= 0 || counting > length) counting = length;
-    if (counting >= 1) document.elements.inlineInput.disabled = false;
-    counting--;
-    // if (arr[counting]) document.giveFocusTo(arr[counting]);
-    if (arr[counting]) arr[counting].submit()
-
+    if (Settings.buttonIndex <= -1 || Settings.buttonIndex > length) Settings.buttonIndex = length -1;
+    if (arr[Settings.buttonIndex]) arr[Settings.buttonIndex].submit()
   }
   if (key === "CTRL_C") {
     term.grabInput(false);
