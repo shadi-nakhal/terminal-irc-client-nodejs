@@ -20,12 +20,11 @@ class Connecting{
         this.client = client
         let connect = () => {
             client.connect(this.port, this.server)
+            this.connecting = false;
+            Settings[this.identity].PassedMOTD = false
             clearTimeout(Settings[this.identity]['timeout'])
             clearTimeout(Settings[this.identity]['ping'])
             clearTimeout(Settings[this.identity]['connect'])
-            Settings[this.identity]['timeout'] = setTimeout(() => { 
-                client.emit('timeout', "Ping timeout")
-            }, 90000);
         }
 
         let connectHandler = () =>{
@@ -34,20 +33,21 @@ class Connecting{
             client.write(`CAP END\r\n`);
             client.write(`NICK ${this.nickname}\r\n`);
             client.write(`USER ${this.user} 0 * :${this.realname}\r\n`);
-            this.connecting = false;
-            Settings[this.identity].PassedMOTD = false
+
         }
 
         let errorHandler =(err)=> {
             if (!this.connecting) {
                 this.connecting = true;
+                Settings[this.identity].disconnected = true
                 Settings[this.identity].joinedChans.forEach(chan => {
                     Settings[this.identity][chan.toLowerCase()].logs +=`^RDisconnected...^\r\n` 
-                    Settings[this.identity][chan]['chanNicks'] = []
+                    // Settings[this.identity][chan]['chanNicks'] = []
                 })
             }
-            Settings[this.identity]['connect'] = setTimeout(connect, 9000)
+            Settings[this.identity]['connect'] = setTimeout(connect, 5000)
             Settings[this.identity].status += `^R${err} Reconnecting...^\r\n`
+            
         }
 
         client.on('error',   errorHandler);
@@ -55,12 +55,12 @@ class Connecting{
         client.on('connect',   connectHandler);
         client.on('timeout', errorHandler);
 
-
         connect()
     }
 
     CreateSettings(){
         Settings[this.identity] = {
+            disconnected: this.connecting,
             private : {},
             identity : this.identity,
             nickname : this.nickname,

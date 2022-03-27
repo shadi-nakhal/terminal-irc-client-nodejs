@@ -38,18 +38,20 @@ class Listener extends Connecting {
         let server = this.server;
         Settings[identity].status = "";
         client.on("data", (data) => {
+
             data = data.toString().trim();
             let rnparse = data.split("\r\n");
             for (let raw of rnparse) {
+                let date = new Date().toTimeString().slice(0,8) + " "
                 // make a unquie session ident pass it to the parser
                 let parsed = parser(raw, identity); // and then pass it with the parsed data!!
                 let { command, params } = parsed;
-                Settings[identity].status += raw + "\r\n";
+                Settings[identity].status += date+raw + "\r\n";
                 if (command === "PING" || command === "PONG") PING(parsed, params, client);
                 if (command === "001") WELCOME(params, identity, client); // RPL_WELCOME (001)
                 if(command === "462") AlreadyReg(parsed, client)
                 if (command === "004") SERVERINFO(identity, server); // RPL_MYINFO (004) server info
-                if (command === "372" || command === "422") MOTD(client, parsed); // RPL_MOTD (372)
+                if (command === "376" || command === "422") MOTD(client, parsed); // RPL_MOTD (372)
                 if (command === "353") GETNAMES(parsed); // RPL_NAMREPLY (353
                 if (command === "366") SHOWNAMES(parsed); // RPL_ENDOFNAMES (366)'
                 if (command === "NICK") CHANGEDNICK(parsed, identity);
