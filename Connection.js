@@ -41,7 +41,7 @@ class Connecting{
                 this.connecting = true;
                 Settings[this.identity].disconnected = true
                 Settings[this.identity].joinedChans.forEach(chan => {
-                    Settings[this.identity][chan.toLowerCase()].logs +=`^RDisconnected...^\r\n` 
+                    Settings[this.identity][chan.toLowerCase()].logs +=`^R${err} Reconnecting...^\r\n` 
                     // Settings[this.identity][chan]['chanNicks'] = []
                 })
             }
@@ -51,7 +51,6 @@ class Connecting{
         }
 
         client.on('error',   errorHandler);
-        client.on('SERVERERROR',   errorHandler);
         client.on('connect',   connectHandler);
         client.on('timeout', errorHandler);
 

@@ -31,7 +31,9 @@ function ChannelButton(channalButton) {
             Room.Status.scrollToBottom();
         }
         if (channalButton.type === "channel") {
-            if(!disconnected) Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
+            if(!disconnected) {
+                Room.Nicks.setContent(NickSorter(Settings[channalButton.owner][channalButton.name]["chanNicks"]));
+           }else Room.Nicks.setContent("");
             Room.Main.setContent(Settings[channalButton.owner][channalButton.name].logs, true, true);
             Settings[channalButton.owner][channalButton.name]["viewed"] = true;
             Settings[channalButton.owner][channalButton.name]["mentioned"] = false;
@@ -175,6 +177,9 @@ async function InputParser(data) {
             case "/error":
                 connection.client.emit("error", "invoked error")
                 return;
+            case "/timeout":
+                connection.client.emit("timeout", "ping timeout")
+                return;
         }
 
         return { data: `${incoming[0]} is not a command`, command: true };
@@ -190,6 +195,7 @@ function update() {
             let rnparse = data.split("\r\n");
             for (let raw of rnparse) {
                 let parsed = parser(raw, connection.identity);
+                let disconnected = Settings[connection.identity].disconnected
                 if (parsed.command === "PRIVMSG") {
                     if (parsed.params[0] === Settings[parsed.identity].nickname) {
                         let otherNick = parsed.raw.split(":")[1].split("!")[0];
@@ -222,7 +228,9 @@ function update() {
                 }
                 if (chanbutt?.type === "channel") {
                     Room.Main.setContent(Settings[chanbutt.owner][chanbutt.name]?.logs, true, true);
-                    if(!Settings[chanbutt.owner].disconnected) Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
+                    if(!disconnected) {
+                         Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
+                    }else Room.Nicks.setContent("");
                     Room.Main.scrollToBottom();
                 }
                 if (chanbutt.type === "private") {
@@ -257,6 +265,7 @@ function update() {
                     Room.Nicks.setContent("");
                     Room.Main.scrollToBottom();
                 }
+                
             });
 
             connection.UpdateScreen = true;
