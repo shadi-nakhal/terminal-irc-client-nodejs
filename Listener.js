@@ -21,6 +21,7 @@ const {
     PRIVMSG,
     SetTopic,
     MODE,
+    AlreadyReg,
 } = require("./Controllers/index");
 const Settings = require("./settings");
 const { Connecting } = require("./Connection");
@@ -46,6 +47,7 @@ class Listener extends Connecting {
                 Settings[identity].status += raw + "\r\n";
                 if (command === "PING" || command === "PONG") PING(parsed, params, client);
                 if (command === "001") WELCOME(params, identity, client); // RPL_WELCOME (001)
+                if(command === "462") AlreadyReg(parsed, client)
                 if (command === "004") SERVERINFO(identity, server); // RPL_MYINFO (004) server info
                 if (command === "372" || command === "422") MOTD(client, parsed); // RPL_MOTD (372)
                 if (command === "353") GETNAMES(parsed); // RPL_NAMREPLY (353

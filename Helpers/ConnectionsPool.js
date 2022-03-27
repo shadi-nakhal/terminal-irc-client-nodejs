@@ -24,7 +24,7 @@ function RemoveCon(identity){
     target.connecting = false
     Settings[identity].PassedMOTD = false
     target.client.removeAllListeners()
-    if(target.connecting === false) target.client.destroy()
+    target.client.destroy()
     Pool = Pool.filter(pro => pro.identity !== identity)
 }
 

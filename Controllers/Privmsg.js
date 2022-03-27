@@ -11,12 +11,12 @@ function PRIVMSG(parsed, client){
         let msgArray = parsed.params.slice(1).map(element => {
             if(element.toLowerCase() === ownNick.toLowerCase()){
                 Settings[parsed.identity][channelsname]["mentioned"] = true;
-                return element =`^C${element}^`
-            }return element
+                return element = `^C${element}^`
+            }return EscapeCarets(element)
         });
         let msg = msgArray.join(" ")
 
-        Settings[parsed.identity][channelsname].logs += `^m${EscapeCarets(senderNickname)}^::${EscapeCarets(msg)}\r\n`
+        Settings[parsed.identity][channelsname].logs += `^m${EscapeCarets(senderNickname)}^::${msg}\r\n`
     }
     if(parsed.params[1] == '\x01VERSION\x01'){
         let senderNickname = parsed.prefix.split("!")[0]

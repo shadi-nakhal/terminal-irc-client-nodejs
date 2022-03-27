@@ -114,7 +114,7 @@ async function InputParser(data) {
                 return;
             case "/join":
                 channel = incoming[1]?.toLowerCase();
-                if (notFrankenstein) connection.client.write(`JOIN ${channel}\r\n`);
+                if (notFrankenstein) connection.client.write(`JOIN ${channel}\r\n`)
                 return;
             case "/quit":
                 if (!notFrankenstein) {
@@ -170,6 +170,9 @@ async function InputParser(data) {
                 return;
             case "/test":
                 Getlisteners();
+                return;
+            case "/error":
+                connection.client.emit("error", "invoked error")
                 return;
         }
 
