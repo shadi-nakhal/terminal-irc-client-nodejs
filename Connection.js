@@ -25,6 +25,10 @@ class Connecting{
             clearTimeout(Settings[this.identity]['timeout'])
             clearTimeout(Settings[this.identity]['ping'])
             clearTimeout(Settings[this.identity]['connect'])
+            Settings[this.identity].disconnected = false
+            Settings[this.identity].joinedChans.forEach(chan => {
+                Settings[this.identity][chan.toLowerCase()].logs +=`^Gconnected!^\r\n` 
+            })
         }
 
         let connectHandler = () =>{
@@ -37,6 +41,7 @@ class Connecting{
         }
 
         let errorHandler =(err)=> {
+            // if(err?.code === 'EISCONN') return
             if (!this.connecting) {
                 this.connecting = true;
                 Settings[this.identity].disconnected = true
