@@ -1,39 +1,65 @@
-const Settings = require('../settings')
-const { EscapeCarets } = require("../Helpers/EscapeCarets")
+const Settings = require("../settings");
+const { EscapeCarets } = require("../Helpers/EscapeCarets");
+
+let counter = 0;
+let resetTimeON = false;
+
+function PRIVMSG(parsed, client) {
+    let senderNickname = parsed.raw.split(":")[1].split("!")[0];
+    let channelsname = parsed.params[0].toLowerCase();
+    let ownNick = Settings[parsed.identity].nickname;
 
 
-function PRIVMSG(parsed, client){
-    let senderNickname = parsed.raw.split(":")[1].split("!")[0]
+    function msgThroatle(nickname, msg){
+        if (counter < 3) {
+            client.write(`NOTICE ${nickname} :${msg}\r\n`);
+            counter++;
+        }
+        if (!resetTimeON) {
+            setTimeout(() => {
+                counter = 0;
+                resetTimeON = false;
+            }, 60000);
+            resetTimeON = true;
+        }
+    }
 
-    if(parsed.params[0][0] === '#'){
-        let ownNick = Settings[parsed.identity].nickname
-        let channelsname = parsed.params[0].toLowerCase()
-        let msgArray = parsed.params.slice(1).map(element => {
-            if(element.toLowerCase() === ownNick.toLowerCase()){
+    function msgParser(msg) {
+        let msgArray = msg.map((element) => {
+            if (element.toLowerCase() === ownNick.toLowerCase()) {
                 Settings[parsed.identity][channelsname]["mentioned"] = true;
-                return element = `^C${element}^`
-            }return EscapeCarets(element)
+                return (element = `^C${element}^`);
+            }
+            return EscapeCarets(element);
         });
-        let msg = msgArray.join(" ")
-
-        Settings[parsed.identity][channelsname].logs += `^m${EscapeCarets(senderNickname)}^::${msg}\r\n`
-    }
-    if(parsed.params[1] == '\x01VERSION\x01'){
-        let senderNickname = parsed.prefix.split("!")[0]
-        client.write(`PRIVMSG ${senderNickname} : this Frankenstein's client 1.0\r\n`)
-        client.write(`PRIVMSG ${senderNickname} :\u0001VERSION\u0001\r\n`)
-    } 
-    if(parsed.params[0] === Settings[parsed.identity].nickname){
-        let senderNickname = parsed.raw.split(":")[1].split("!")[0]
-        let msg = parsed.params.slice(1).join(" ")
-        if(!Settings[parsed.identity]['private']) Settings[parsed.identity]['private'] = {}
-        if(!Settings[parsed.identity]['private'][senderNickname]) Settings[parsed.identity]['private'][senderNickname] = {}
-        if(!Settings[parsed.identity]['private'][senderNickname].logs) Settings[parsed.identity]['private'][senderNickname].logs = ""
-        Settings[parsed.identity]['private'][senderNickname].logs += `^m${EscapeCarets(senderNickname)}^::${EscapeCarets(msg)}\r\n`
-
+        let parsedMsg = msgArray.join(" ");
+        if (msgArray[0] === "\x01ACTION") {
+            parsedMsg = parsedMsg.replace("\x01ACTION", "");
+            return `^m* ${EscapeCarets(senderNickname)}${parsedMsg}^\r\n`;
+        }
+        return `^m${EscapeCarets(senderNickname)}^::${parsedMsg}\r\n`;
     }
 
+    if (parsed.params[0][0] === "#") {
+        Settings[parsed.identity][channelsname].logs += msgParser(parsed.params.slice(1));
+    }
+
+    if (parsed.params[1] === "\x01VERSION\x01") {
+        msgThroatle(senderNickname, `\u0001VERSION Frankenstein's client 1.0\u0001`)
+    }
+
+    if (parsed.params[1] === "\x01PING") {
+        msgThroatle(senderNickname, parsed.params.slice(1).join(" "))
+    }
+
+    if (parsed.params[0] === ownNick && parsed.params[1].charCodeAt(0) !== 1) {
+        if (!Settings[parsed.identity]["private"]) Settings[parsed.identity]["private"] = {};
+        if (!Settings[parsed.identity]["private"][senderNickname])
+            Settings[parsed.identity]["private"][senderNickname] = {};
+        if (!Settings[parsed.identity]["private"][senderNickname].logs)
+            Settings[parsed.identity]["private"][senderNickname].logs = "";
+        Settings[parsed.identity]["private"][senderNickname].logs += msgParser(parsed.params.slice(1));
+    }
 }
 
-
-module.exports = { PRIVMSG }
+module.exports = { PRIVMSG };

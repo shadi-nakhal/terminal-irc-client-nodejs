@@ -196,8 +196,9 @@ function update() {
             for (let raw of rnparse) {
                 let parsed = parser(raw, connection.identity);
                 let disconnected = Settings[connection.identity].disconnected
+                let ownNick = Settings[parsed.identity].nickname
                 if (parsed.command === "PRIVMSG") {
-                    if (parsed.params[0] === Settings[parsed.identity].nickname) {
+                    if (parsed.params[0] === ownNick && parsed.params[1].charCodeAt(0) !== 1) {
                         let otherNick = parsed.raw.split(":")[1].split("!")[0];
                         let viewed = (chanbutt.owner === parsed.identity && chanbutt.name === otherNick);
                         let content = viewed ? `^m>${EscapeCarets(otherNick)}^` : `^m${EscapeCarets(otherNick)}^`;
