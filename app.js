@@ -134,6 +134,14 @@ async function InputParser(data) {
                 Room.channelz.children[Room.channelz.children.length - 1].submit();
                 Room.changePrompt("");
                 return;
+            case "/me":
+                if (incoming[1] && notFrankenstein){
+                    connection.client.write(`PRIVMSG ${chanbutt.name} :\u0001ACTION ${incoming.slice(1).join(" ")}\u0001\r\n`);
+                    Settings[chanbutt.owner][chanbutt.name].logs += `^m* ${Settings[chanbutt.owner].nickname} ${incoming.slice(1).join(" ")}^\r\n`
+                    Room.Main.setContent(Settings[chanbutt.owner][chanbutt.name].logs, true, true);
+                    Room.Main.scrollToBottom();
+                }
+                return;
             case "/kick":
                 message = incoming[2] || "Eeee-yah!";
                 if (incoming[1] && notFrankenstein)
@@ -167,9 +175,6 @@ async function InputParser(data) {
             case "/devoice":
                 if (incoming[1] && notFrankenstein)
                     connection.client.write(`mode ${chanbutt.name} -v ${incoming[1]}\r\n`);
-                return;
-            case "/query":
-                null;
                 return;
             case "/test":
                 Getlisteners();
