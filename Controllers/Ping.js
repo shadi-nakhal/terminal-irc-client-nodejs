@@ -11,12 +11,12 @@ function PING(parsed, params, client){ // repling pings
         Settings[parsed.identity].disconnected = false
         Settings[parsed.identity]['ping'] = setTimeout(() => {
             client.write(`PING ${Settings[parsed.identity].nickname}\r\n`)
-        }, 70000);
+        }, 60000);
     }
-     Settings[parsed.identity]['timeout'] = setTimeout(() => {
-        Settings[parsed.identity].disconnected = true
-        client.emit('timeout', "Ping timeout")
-    }, 240000);
+    //  Settings[parsed.identity]['timeout'] = setTimeout(() => {
+    //     Settings[parsed.identity].disconnected = true
+    //     client.emit('timeout', "Ping timeout")
+    // }, 10000);
 }
 
 

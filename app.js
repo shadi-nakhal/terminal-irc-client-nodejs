@@ -16,7 +16,6 @@ Room.channelz.on("submit", ChannelButton);
 
 function ChannelButton(channalButton) {
     if (channalButton?.name !== chanbutt?.name || channalButton?.owner !== chanbutt?.owner) {
-        let disconnected = Settings[channalButton.owner]?.disconnected || false
         document.giveFocusTo(Room.input);
         Settings.chanbutt = channalButton;
         chanbutt = channalButton;
@@ -31,9 +30,7 @@ function ChannelButton(channalButton) {
             Room.Status.scrollToBottom();
         }
         if (channalButton.type === "channel") {
-            if(!disconnected) {
-                Room.Nicks.setContent(NickSorter(Settings[channalButton.owner][channalButton.name]["chanNicks"]));
-           }else Room.Nicks.setContent("");
+            Room.Nicks.setContent(NickSorter(Settings[channalButton.owner][channalButton.name]["chanNicks"]));
             Room.Main.setContent(Settings[channalButton.owner][channalButton.name].logs, true, true);
             Settings[channalButton.owner][channalButton.name]["viewed"] = true;
             Settings[channalButton.owner][channalButton.name]["mentioned"] = false;
@@ -200,7 +197,6 @@ function update() {
             let rnparse = data.split("\r\n");
             for (let raw of rnparse) {
                 let parsed = parser(raw, connection.identity);
-                let disconnected = Settings[connection.identity].disconnected
                 let ownNick = Settings[parsed.identity].nickname
                 if (parsed.command === "PRIVMSG") {
                     if (parsed.params[0] === ownNick && parsed.params[1].charCodeAt(0) !== 1) {
@@ -234,9 +230,7 @@ function update() {
                 }
                 if (chanbutt?.type === "channel") {
                     Room.Main.setContent(Settings[chanbutt.owner][chanbutt.name]?.logs, true, true);
-                    if(!disconnected) {
-                         Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
-                    }else Room.Nicks.setContent("");
+                    Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
                     Room.Main.scrollToBottom();
                 }
                 if (chanbutt.type === "private") {
@@ -257,7 +251,7 @@ function update() {
                 }
                 if (chanbutt?.type === "channel") {
                     Room.Main.setContent(Settings[chanbutt.owner][chanbutt.name]?.logs, true, true);
-                    Room.Nicks.setContent("");
+                    Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
                     Room.Main.scrollToBottom();
                 }
             });
@@ -268,7 +262,7 @@ function update() {
                 }
                 if (chanbutt?.type === "channel") {
                     Room.Main.setContent(Settings[chanbutt.owner][chanbutt.name]?.logs, true, true);
-                    Room.Nicks.setContent("");
+                    Room.Nicks.setContent(NickSorter(Settings[chanbutt.owner][chanbutt.name]["chanNicks"]));
                     Room.Main.scrollToBottom();
                 }
                 
