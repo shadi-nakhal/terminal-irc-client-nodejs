@@ -173,6 +173,10 @@ async function InputParser(data) {
                 if (incoming[1] && notFrankenstein)
                     connection.client.write(`mode ${chanbutt.name} -v ${incoming[1]}\r\n`);
                 return;
+            case "/whois":
+                if (incoming[1] && notFrankenstein)
+                connection.client.write(`whois ${incoming[1]}\r\n`);
+                return
             case "/test":
                 Getlisteners();
                 return;

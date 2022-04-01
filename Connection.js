@@ -19,10 +19,10 @@ class Connecting{
         const client = new net.Socket()
         this.client = client
         this.preError = true
-        client.setTimeout(100000)
+        client.setTimeout(80000)
         let connect = () => {
             client.connect(this.port, this.server)
-            client.setTimeout(100000)
+            client.setTimeout(80000)
             this.connecting = false;
             Settings[this.identity].PassedMOTD = false
             clearTimeout(Settings[this.identity]['timeout'])

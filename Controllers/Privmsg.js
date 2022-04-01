@@ -19,7 +19,7 @@ function PRIVMSG(parsed, client) {
             setTimeout(() => {
                 counter = 0;
                 resetTimeON = false;
-            }, 60000);
+            }, 5000);
             resetTimeON = true;
         }
     }
@@ -48,7 +48,7 @@ function PRIVMSG(parsed, client) {
         MsgThroatle(senderNickname, `\u0001VERSION Frankenstein's client 1.0\u0001`)
     }
 
-    if (parsed.params[1] === "\x01PING") {
+    if (parsed.params[1] === "\x01PING\x01" || parsed.params[1] === "\x01PING") {
         MsgThroatle(senderNickname, parsed.params.slice(1).join(" "))
     }
 

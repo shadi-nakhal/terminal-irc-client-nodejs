@@ -1,6 +1,8 @@
+const Settings = require("../settings");
 
 
 let whois = []
+let channel
 
 
 function IdleTime(secs, signed){ // finding idle time
@@ -30,6 +32,7 @@ function WHOISSERVER(params, client) { // RPL_WHOISSERVER (312)
 function WHOISCHANNELS(params, client) { // RPL_WHOISCHANNELS (319)
     let p = params
     let msg3 = `[${p[1]}] ${p.slice(2).join(" ")}`
+    channel = params[2].toLowerCase()
     whois.push(msg3)
 }
 
@@ -41,12 +44,19 @@ function WHOISIDLE(params, client) { // RPL_WHOISIDLE (317)
     whois.push(msg4)
 }
 
-function ENDOFWHOIS(params, client) { // RPL_ENDOFWHOIS (318)
-    let p = params
+function ENDOFWHOIS(parsed, client) { // RPL_ENDOFWHOIS (318)
+    let p = parsed.params
+    let chanbutt = Settings.chanbutt
+    let chan = Settings.chanbutt.name.toLowerCase()
     let msg4 = `[${p[1]}] ${p.slice(2).join(" ")}`
     whois.push(msg4)
-    // whois.forEach((ms) => client.write(`PRIVMSG #Hell :${ms} \r\n`))
-
+    console.logger(chan)
+    if(chanbutt.type === 'server')
+        whois.forEach((ms) => Settings[parsed.identity].status += `^y* ${ms}^\r\n` )
+    if(chanbutt.type === 'channel')
+        whois.forEach((ms) => Settings[parsed.identity][chan].logs += `^y* ${ms}^\r\n` )
+    channel = ""
+    whois = []
 }
 
 

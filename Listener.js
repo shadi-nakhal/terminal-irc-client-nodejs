@@ -61,7 +61,7 @@ class Listener extends Connecting {
                 if (command === "312") WHOISSERVER(params, client);
                 if (command === "319") WHOISCHANNELS(params, client);
                 if (command === "317") WHOISIDLE(params, client);
-                if (command === "318") ENDOFWHOIS(params, client);
+                if (command === "318") ENDOFWHOIS(parsed, client);
                 if (command === "332") SetTopic(parsed);
                 if (command === "PRIVMSG") PRIVMSG(parsed, client);
                 if (command === "433") NICKNAMEINUSE(client, parsed, identity); // ERR_NICKNAMEINUSE (433)
