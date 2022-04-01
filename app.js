@@ -177,6 +177,10 @@ async function InputParser(data) {
                 if (incoming[1] && notFrankenstein)
                 connection.client.write(`whois ${incoming[1]}\r\n`);
                 return
+            case "/mode":
+                if (incoming[1] && notFrankenstein)
+                connection.client.write(`mode ${incoming[1]} ${incoming[2]}\r\n`);
+                return   
             case "/test":
                 Getlisteners();
                 return;

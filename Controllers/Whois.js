@@ -50,7 +50,6 @@ function ENDOFWHOIS(parsed, client) { // RPL_ENDOFWHOIS (318)
     let chan = Settings.chanbutt.name.toLowerCase()
     let msg4 = `[${p[1]}] ${p.slice(2).join(" ")}`
     whois.push(msg4)
-    console.logger(chan)
     if(chanbutt.type === 'server')
         whois.forEach((ms) => Settings[parsed.identity].status += `^y* ${ms}^\r\n` )
     if(chanbutt.type === 'channel')
