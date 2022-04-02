@@ -1,5 +1,5 @@
-function EscapeCarets(value){
-    return value.replaceAll("^","^^")
+function EscapeCarets(value) {
+  return value.replaceAll('^', '^^');
 }
 
-module.exports = { EscapeCarets }
+module.exports = { EscapeCarets };

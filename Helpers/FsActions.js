@@ -1,5 +1,5 @@
-const fsActions = {show : 'show', add : 'add', del : 'del', showAll : 'showAll', all : 'all'}
+const fsActions = {
+  show: 'show', add: 'add', del: 'del', showAll: 'showAll', all: 'all'
+};
 
-
-
-module.exports = { fsActions }
+module.exports = { fsActions };

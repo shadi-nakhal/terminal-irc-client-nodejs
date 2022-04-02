@@ -4,12 +4,15 @@
   "description": "frankenstein's monster client",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ./ --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "terminal-kit": "^2.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.12.0"
   }
 }

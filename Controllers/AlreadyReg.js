@@ -1,11 +1,9 @@
-const Settings = require("../settings");
+const Settings = require('../settings');
 
-function AlreadyReg(parsed, client){
-    let incomingnickName = parsed.params[0]
-        Settings[parsed.identity].nickname = incomingnickName
-        client.write(`PING ${Settings[parsed.identity].nickname}\r\n`);
-    
+function AlreadyReg(parsed, client) {
+  const incomingnickName = parsed.params[0];
+  Settings[parsed.identity].nickname = incomingnickName;
+  client.write(`PING ${Settings[parsed.identity].nickname}\r\n`);
 }
 
-
-module.exports = { AlreadyReg }
+module.exports = { AlreadyReg };

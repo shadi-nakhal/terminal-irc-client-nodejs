@@ -1,9 +1,5 @@
-const { Rooms } = require('./Rooms')
+const { Rooms } = require('./Rooms');
 
+const Room = new Rooms();
 
-let Room = new Rooms()
-
-
-
-module.exports = { Room }
-
+module.exports = { Room };

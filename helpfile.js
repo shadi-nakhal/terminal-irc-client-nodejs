@@ -1,4 +1,4 @@
-let text = `
+const text = `
 
                           ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
                         ▓▀▀                ▀▀▓▓▓▓
@@ -81,6 +81,6 @@ example2 : /connect [profilename]
 
 
 press PAGE UP!
-`
+`;
 
-module.exports = {text}
+module.exports = { text };
