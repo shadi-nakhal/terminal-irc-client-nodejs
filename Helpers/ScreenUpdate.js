@@ -7,9 +7,9 @@ const Settings = require("../settings");
 const IrcParser = require("./IrcParser");
 
 function ScreenUpdate() {
+    let chanbutt = Settings.chanbutt;
     connectionsPool().map((connection) => {
         function UpdateScreen(data) {
-            let chanbutt = Settings.chanbutt;
             data = data.toString().trim();
             let rnparse = data.split("\r\n");
             for (let raw of rnparse) {
@@ -40,7 +40,7 @@ function ScreenUpdate() {
                         Room.channelz.onParentResize();
                     }
                 }
-                Update(chanbutt);
+                Update();
                 Room.changePrompt(Settings[chanbutt?.owner]?.nickname || "");
             }
         }
@@ -48,10 +48,10 @@ function ScreenUpdate() {
             connection.client.on("data", UpdateScreen);
 
             connection.client.on("timeout", () => {
-                Update(chanbutt);
+                Update();
             });
             connection.client.on("error", () => {
-                Update(chanbutt);
+                Update();
             });
 
             connection.UpdateScreen = true;

@@ -23,10 +23,10 @@ function ChannelButton(channalButton) {
         }
         if (channalButton.type === "server") {
             Room.ShowStatus();
-            Update(channalButton);
+            Update();
         }
         if (channalButton.type === "channel") {
-            Update(channalButton);
+            Update();
             Settings[channalButton.owner][channalButton.name]["viewed"] = true;
             Settings[channalButton.owner][channalButton.name]["mentioned"] = false;
             Room.ShowRoom();
@@ -34,7 +34,7 @@ function ChannelButton(channalButton) {
         if (channalButton.type === "private") {
             Settings[channalButton.owner]["private"][channalButton.name]["viewed"] = true;
             Room.ShowStatus();
-            Update(channalButton);
+            Update();
         }
         Room.input.setContent("");
         Room.changePrompt(Settings[channalButton.owner]?.nickname || "");
@@ -59,12 +59,12 @@ async function onInputSubmit(value) {
                             data
                         )}\r\n`;
                     if (inputmsg.command) Settings[chanbutt.owner][chanbutt.name].logs += `^R${data}^\r\n`;
-                    Update(chanbutt);
+                    Update();
                     if (!inputmsg.command) connection.client.write(`PRIVMSG ${chanbutt.name} :${data}\r\n`);
                 }
                 if (chanbutt.type === "server") {
                     if (inputmsg.command) Settings[chanbutt.owner].status += `^R${data}\r\n^`;
-                    Update(chanbutt);
+                    Update();
                     if (!inputmsg.command) connection.client.write(data + "\r\n");
                 }
                 if (chanbutt.type === "private") {
@@ -73,7 +73,7 @@ async function onInputSubmit(value) {
                             nickname
                         )}^::${EscapeCarets(data)}\r\n`;
                     if (inputmsg.command) Settings[chanbutt.owner]["private"][chanbutt.name].logs += `^R${data}^\r\n`;
-                    Update(chanbutt);
+                    Update();
                     if (!inputmsg.command) connection.client.write(`PRIVMSG ${chanbutt.name} :${data}\r\n`);
                 }
             }

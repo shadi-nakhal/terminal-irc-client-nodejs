@@ -3,7 +3,7 @@ const Settings = require("../settings");
 const { NickSorter } = require("./NicksSorter");
 
 function Update(channelButton) {
-    let chanbutt = channelButton;
+    let chanbutt = Settings.chanbutt;
     if (chanbutt?.type === "server") {
         Room.Status.setContent(Settings[chanbutt.owner].status, true, true);
         Room.Status.scrollToBottom();
