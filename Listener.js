@@ -1,6 +1,6 @@
 const { term } = require("./Dom");
 
-const parser = require("./parser");
+const IrcParser = require("./Helpers/IrcParser");
 const {
     WHOISUSER,
     WHOISSERVER,
@@ -43,8 +43,7 @@ class Listener extends Connecting {
             let rnparse = data.split("\r\n");
             for (let raw of rnparse) {
                 let date = new Date().toTimeString().slice(0,8) + " "
-                // make a unquie session ident pass it to the parser
-                let parsed = parser(raw, identity); // and then pass it with the parsed data!!
+                let parsed = IrcParser(raw, identity);
                 let { command, params } = parsed;
                 Settings[identity].status += date+raw + "\r\n";
                 if (command === "PING" || command === "PONG") PING(parsed, params, client);

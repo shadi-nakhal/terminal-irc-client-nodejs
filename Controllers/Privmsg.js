@@ -9,8 +9,7 @@ function PRIVMSG(parsed, client) {
     let channelsname = parsed.params[0].toLowerCase();
     let ownNick = Settings[parsed.identity].nickname;
 
-
-    function MsgThroatle(nickname, msg){
+    function MsgThroatle(nickname, msg) {
         if (counter < 3) {
             client.write(`NOTICE ${nickname} :${msg}\r\n`);
             counter++;
@@ -27,7 +26,12 @@ function PRIVMSG(parsed, client) {
     function MsgParser(msg) {
         let msgArray = msg.map((element) => {
             if (element.toLowerCase() === ownNick.toLowerCase()) {
-                Settings[parsed.identity][channelsname]["mentioned"] = true;
+                if (channelsname[0] === "#") {
+                    Settings[parsed.identity][channelsname]["mentioned"] = true;
+                } else {
+                    Settings[parsed.identity]["private"][senderNickname]["mentioned"] = true;
+                }
+                console.logger(channelsname, parsed);
                 return (element = `^C${element}^`);
             }
             return EscapeCarets(element);
@@ -45,11 +49,11 @@ function PRIVMSG(parsed, client) {
     }
 
     if (parsed.params[1] === "\x01VERSION\x01") {
-        MsgThroatle(senderNickname, `\u0001VERSION Frankenstein's client 1.0\u0001`)
+        MsgThroatle(senderNickname, `\u0001VERSION Frankenstein's client 1.0\u0001`);
     }
 
     if (parsed.params[1] === "\x01PING\x01" || parsed.params[1] === "\x01PING") {
-        MsgThroatle(senderNickname, parsed.params.slice(1).join(" "))
+        MsgThroatle(senderNickname, parsed.params.slice(1).join(" "));
     }
 
     if (parsed.params[0] === ownNick && parsed.params[1].charCodeAt(0) !== 1) {

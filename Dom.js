@@ -16,8 +16,6 @@ term.fullscreen(true);
 term.windowTitle("Frankenstein");
 term.hideCursor(true);
 
-// let Settings.buttonIndex = Settings.buttonIndex
-let whoIsFirst = "";
 let tabcount = 0
 let charsToBeGuessed
 term.on("key", function (key) {
