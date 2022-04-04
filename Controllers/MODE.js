@@ -16,8 +16,9 @@ function MODE(parsed) {
   const { identity } = parsed;
   const opNick = parsed.prefix.split('!')[0];
   const modedNick = parsed.params[length];
-  const { chanNicks } = Settings[identity][channel];
+  const ownNick = Settings[identity].nickname;
   if (parsed.params.length > 2) {
+    const { chanNicks } = Settings[identity][channel];
     const newlist = chanNicks.map((obj) => {
       if (obj.nickname === modedNick) {
         if (parsedMode[0] === '+') {
@@ -39,7 +40,7 @@ function MODE(parsed) {
       modedNick
     )}'s ${mode}^\r\n`;
   }
-  if (parsed.params.length === 2) {
+  if (parsed.params.length === 2 && parsed.params[0] !== ownNick) {
     Settings[identity][channel].logs += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${channel}^\r\n`;
   }
 }

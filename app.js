@@ -37,7 +37,7 @@ function ChannelButton(channalButton) {
       Update();
     }
     Room.input.setContent('');
-    Room.changePrompt(Settings[channalButton.owner]?.nickname || '');
+    Room.changePrompt(EscapeCarets(Settings[channalButton.owner]?.nickname) || '');
   }
   term.hideCursor(true);
 }

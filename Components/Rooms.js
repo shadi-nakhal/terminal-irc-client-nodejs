@@ -144,7 +144,6 @@ class Rooms {
   };
 
   changePrompt = (text) => {
-    if (text.includes('^')) text = text.replace('^', '^^');
     const newprompt = `${text}: `;
     this.input.promptTextBox.setContent(`^C${newprompt}^:`, true);
     const size = this.input.promptTextBox.getContentSize();

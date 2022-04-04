@@ -63,7 +63,7 @@ class Listener extends Connecting {
         if (command === '332') SetTopic(parsed);
         if (command === 'PRIVMSG') PRIVMSG(parsed, client);
         if (command === '433') NICKNAMEINUSE(client, parsed, identity); // ERR_NICKNAMEINUSE (433)
-        if (command === 'MODE') MODE(parsed, client);
+        if (command === 'MODE') MODE(parsed);
         if (command === 'ERROR') HandleKill(client, raw);
       }
     });

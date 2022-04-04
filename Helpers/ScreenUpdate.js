@@ -40,20 +40,14 @@ function ScreenUpdate() {
             Room.channelz.onParentResize();
           }
         }
-        Room.changePrompt(Settings[chanbutt?.owner]?.nickname);
+        Room.changePrompt(EscapeCarets(Settings[chanbutt?.owner]?.nickname));
         Update();
       }
     }
     if (connection.UpdateScreen !== true) {
       connection.client.on('data', UpdateScreen);
-
-      connection.client.on('timeout', () => {
-        Update();
-      });
-      connection.client.on('error', () => {
-        Update();
-      });
-
+      connection.client.on('timeout', Update);
+      connection.client.on('error', Update);
       connection.UpdateScreen = true;
     }
   });
