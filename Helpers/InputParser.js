@@ -16,7 +16,7 @@ async function InputParser(data) {
   const notFrankenstein = chanbutt?.type !== 'Frankenstein';
   let connection;
   if (chanbutt) connection = FindCon(chanbutt.owner);
-  let channel; let message; let nick; let channelId;
+  let channel; let message; let nick; let channelId; let mode;
   if (data[0] === '/') {
     incoming = data.split(' ');
     Room.input.setContent('');
@@ -161,9 +161,10 @@ async function InputParser(data) {
       case '/mode':
         if (notFrankenstein) {
           const { channel, subject } = ParseIncoming(incoming, chanbutt);
-          if(subject === Settings[chanbutt.owner].nickname)
-            connection.client.write(`mode ${subject} ${incoming[2]}\r\n`);
-          else
+          if(subject.toLowerCase() === Settings[chanbutt.owner].nickname.toLowerCase()){
+            mode = incoming[2] || "";
+            connection.client.write(`mode ${subject} ${mode}\r\n`);
+          }else
           connection.client.write(`mode ${channel} ${subject}\r\n`);
         }
         return;

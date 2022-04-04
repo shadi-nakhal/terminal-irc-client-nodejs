@@ -13,8 +13,9 @@ module.exports = {
         'arrow-parens': 'error',
         'comma-dangle': ['error', 'never'],
         'linebreak-style': ['error', 'unix'],
+        'no-useless-concat' : 'error',
         // 'max-len': ['error', { code: 100, tabWidth: 2, ignoreUrls: true }],
         'max-len': 'off',
-        semi: ['error', 'always']
+        'semi': ['error', 'always']
       }
 };

@@ -51,11 +51,15 @@ function MODE(parsed) {
         )}'s ${mode}^\r\n`;
     }
     if (parsed.params.length === 2) {
-        if (parsed.params[0] !== ownNick)
+        if (parsed.params[0].toLowerCase() !== ownNick.toLowerCase())
             Settings[identity][channel].logs += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${channel}^\r\n`;
-        if (parsed.params[0] === ownNick) {
+        if (parsed.params[0].toLowerCase() === ownNick.toLowerCase()) {
             const { name } = Settings.chanbutt;
-            Settings[identity][name].logs += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${opNick}^\r\n`;
+            if(Settings.chanbutt.type === 'channel')
+                Settings[identity][name].logs += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${opNick}^\r\n`;
+            if(Settings.chanbutt.type === 'server')
+                Settings[identity].status += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${opNick}^\r\n`;
+
         }
     }
 }

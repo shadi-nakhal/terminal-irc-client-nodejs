@@ -13,7 +13,7 @@ function JOIN(client, parsed) {
   if (nickname !== usernickname) {
     if (!Settings[identity][incomingChannel]) client.write(`NAMES ${incomingChannel} \r\n`);
     if (Settings[identity][incomingChannel]) {
-      Settings[identity][incomingChannel].logs += `^Y**${nickname} (${incomingPrefix})` + ' has joined^\r\n';
+      Settings[identity][incomingChannel].logs += `^Y**${nickname} (${incomingPrefix}) has joined^\r\n`;
     }
     Settings[identity][incomingChannel].chanNicks.push({ nickname, prefix: false });
   }
