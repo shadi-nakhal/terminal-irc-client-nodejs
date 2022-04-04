@@ -19,7 +19,8 @@ const {
   PRIVMSG,
   SetTopic,
   MODE,
-  AlreadyReg
+  AlreadyReg,
+  Notice
 } = require('./Controllers/index');
 const Settings = require('./settings');
 const { Connecting } = require('./Connection');
@@ -45,6 +46,7 @@ class Listener extends Connecting {
         const parsed = IrcParser(raw, identity);
         const { command, params } = parsed;
         Settings[identity].status += `${date + raw}\r\n`;
+        if(command === 'NOTICE') Notice(parsed);
         if (command === 'PING' || command === 'PONG') PING(parsed, params, client);
         if (command === '001') WELCOME(params, identity, client); // RPL_WELCOME (001)
         if (command === '462') AlreadyReg(parsed, client);

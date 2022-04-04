@@ -16,6 +16,8 @@ const { PRIVMSG } = require('./Privmsg');
 const { MODE } = require('./MODE');
 const { HandleKill } = require('./ERROR');
 const { AlreadyReg } = require('./AlreadyReg');
+const { Notice } = require('./NOTICE');
+
 
 module.exports = {
   WHOISUSER,
@@ -37,5 +39,6 @@ module.exports = {
   SetTopic,
   MODE,
   HandleKill,
-  AlreadyReg
+  AlreadyReg,
+  Notice
 };

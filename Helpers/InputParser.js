@@ -161,6 +161,9 @@ async function InputParser(data) {
       case '/mode':
         if (notFrankenstein) {
           const { channel, subject } = ParseIncoming(incoming, chanbutt);
+          if(subject === Settings[chanbutt.owner].nickname)
+            connection.client.write(`mode ${subject} ${incoming[2]}\r\n`);
+          else
           connection.client.write(`mode ${channel} ${subject}\r\n`);
         }
         return;

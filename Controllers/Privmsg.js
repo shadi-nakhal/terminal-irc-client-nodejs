@@ -31,7 +31,6 @@ function PRIVMSG(parsed, client) {
         } else {
           Settings[parsed.identity].private[senderNickname].mentioned = true;
         }
-        console.logger(channelsname, parsed);
         return (element = `^C${element}^`);
       }
       return EscapeCarets(element);
