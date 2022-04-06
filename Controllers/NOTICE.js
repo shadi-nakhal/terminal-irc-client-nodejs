@@ -1,5 +1,5 @@
 function Notice(parsed){
-    console.logger(parsed);
+    // console.logger(parsed);
 }
 
 
