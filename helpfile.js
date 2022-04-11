@@ -73,6 +73,7 @@ example2 : /connect [profilename]
 ^R/voice
 ^R/devoice
 ^R/clear^
+^R/mode^
 ^R/memory^ check memory
 ^R/error^ invoke connection error
 ^R/timeout^ invoke timeout

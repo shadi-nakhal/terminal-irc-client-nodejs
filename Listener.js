@@ -45,7 +45,7 @@ class Listener extends Connecting {
             buffer(data);
             function buffer(data) {
                 if (data[len] !== "\n") {
-                    return temp = data;
+                    return temp += data;
  
                 }
                 if (data[len] === "\n") {

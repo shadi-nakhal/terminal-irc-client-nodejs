@@ -46,6 +46,7 @@ docker run -it frankenstein
 * /voice
 * /devoice
 * /clear
+* /mode
 * /memory // check memory
 * /error // invoke connection error
 * /timeout // invoke timeout
