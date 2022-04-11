@@ -43,7 +43,7 @@ docker run -it frankenstein
                    ▐███████▓▓▓▒▒▒▓▓▒▓▓▒▓▓▓▓▓▓▓███████
                   ▓███████████▓▓███████████████████▄
 
-##flags:
+## flags:
 -s [server:port] "server and port"
 -n [nickname] "nickname"
 -u [username] "username"
@@ -53,9 +53,9 @@ docker run -it frankenstein
 -p [password] "nickname password"
 
 
-##/server
+## /server
 
-###options: 
+### options: 
 
 show [name] "shows a specific saved profile"
 
@@ -69,10 +69,10 @@ del [name] "deletes a profile"
 
 usage : /server add libera -s irc.libera.chat:6667 -n Fr4nk -u Frankie -r "monster" -c "#javascript"
 
-##/connect
+## /connect
 
-###example1 : /connect -s irc.libera:6667 -n Fr4nk -c "#javascript"
-###example2 : /connect [profilename]
+### example1 : /connect -s irc.libera:6667 -n Fr4nk -c "#javascript"
+### example2 : /connect [profilename]
 
 /query
 /close
