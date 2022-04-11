@@ -9,7 +9,7 @@ function IdleTime(secs, signed) {
   const idleString = idle.toISOString().split('.')[0].split('T')[1];
   const signedOn = new Date(0);
   signedOn.setSeconds(signed);
-  const sign = signedOn.toISOString().split('.')[0].split('T').reverse();
+  const sign = `${signedOn.toDateString()}, ${signedOn.toTimeString().split(" ").slice(0,2).join(" ")}`;
   return { idle: idleString, signedon: sign };
 }
 
@@ -39,7 +39,8 @@ function WHOISIDLE(params) {
   // RPL_WHOISIDLE (317)
   const p = params;
   const time = IdleTime(p[2], p[3]);
-  const msg4 = `[${p[1]}] idle ${time.idle}, signon ${time.signedon[0]}, ${time.signedon[1]}`;
+  console.logger(time);
+  const msg4 = `[${p[1]}] idle ${time.idle}, signed on ${time.signedon}`;
   whois.push(msg4);
 }
 

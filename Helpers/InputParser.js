@@ -6,6 +6,7 @@ const { DisplayInfo } = require('./DisplayInfo');
 const { Room } = require('../Components');
 const { term } = require('../Dom');
 const { ScreenUpdate } = require('./ScreenUpdate');
+const { Update, Clear} = require('./Update');
 const process = require('process');
 
 const Settings = require('../settings');
@@ -177,8 +178,17 @@ async function InputParser(data) {
       case '/timeout':
         connection.client.emit('timeout', 'ping timeout');
         return;
+      case '/raw':
+        Settings[chanbutt.owner].displayRaw = !Settings[chanbutt.owner].displayRaw;
+        Update();
+        return;
+      case '/memory':
+         return { data : DisplayInfo(GetmemoryUsage()), command: true};
+      case '/clear':
+        Clear();
+        Update();
+        return;
     }
-
     return { data: `${incoming[0]} is not a command`, command: true };
   }
 
@@ -206,6 +216,15 @@ function Getlisteners() {
     console.logger(connectionsPool().length, 'connections');
     console.logger('-----------------------');
   });
+}
+
+function GetmemoryUsage() {
+  let memoryObject = {};
+  let memoryUsage = process.memoryUsage();
+  for (let key in memoryUsage){
+    memoryObject[key] = Math.round(memoryUsage[key] / 1024/ 1024 * 100) / 100 + " MB";
+  }
+  return memoryObject;
 }
 
 module.exports = { InputParser };

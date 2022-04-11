@@ -99,7 +99,10 @@ class Connecting {
       realname: this.realname,
       PassedMOTD: false,
       count: 0,
-      joinedChans: []
+      joinedChans: [],
+      displayRaw : false,
+      raw : "",
+      status : ""
     };
   }
 

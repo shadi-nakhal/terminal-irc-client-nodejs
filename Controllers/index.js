@@ -17,6 +17,8 @@ const { MODE } = require('./MODE');
 const { HandleKill } = require('./ERROR');
 const { AlreadyReg } = require('./AlreadyReg');
 const { Notice } = require('./NOTICE');
+const { Status } = require('./Status');
+
 
 
 module.exports = {
@@ -40,5 +42,6 @@ module.exports = {
   MODE,
   HandleKill,
   AlreadyReg,
-  Notice
+  Notice,
+  Status
 };

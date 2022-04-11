@@ -1,6 +1,6 @@
 async function DisplayInfo(obj) {
   const text = [];
-  if (typeof obj === 'string') return `^R**${obj}\n`;
+  if (typeof obj === 'string') return `^R**${obj}^\n`;
   const keys = Object.keys(obj);
   keys.forEach((e) => {
     if (obj[e] instanceof Object && !Array.isArray(obj[e]) && typeof obj[e] !== 'string') {
