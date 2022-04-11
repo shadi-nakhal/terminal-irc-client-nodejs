@@ -40,7 +40,7 @@ function ScreenUpdate() {
             Room.channelz.onParentResize();
           }
         }
-        Room.changePrompt(EscapeCarets(Settings[chanbutt?.owner]?.nickname));
+        Room.changePrompt(EscapeCarets(Settings[chanbutt?.owner]?.nickname || ""));
         Update();
       }
     }
