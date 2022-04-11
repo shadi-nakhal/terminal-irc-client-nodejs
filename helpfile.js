@@ -73,10 +73,11 @@ example2 : /connect [profilename]
 ^R/voice
 ^R/devoice
 ^R/clear^
-^R/memory^ // check memory
-^R/error^ // invoke connection error
-^R/timeout^ // invoke timeout
-^R/test^ // checks some event listeners for leaks
+^R/memory^ check memory
+^R/error^ invoke connection error
+^R/timeout^ invoke timeout
+^R/test^ checks some event listeners for leaks
+^R/raw^ toggle server's status buffer tag view to raw
 ^R/quit^
 
 ^yALT + Q and ALT + A to scroll channels
