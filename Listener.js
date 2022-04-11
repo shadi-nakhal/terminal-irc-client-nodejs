@@ -19,6 +19,8 @@ const {
     PRIVMSG,
     SetTopic,
     MODE,
+    ShowChanModes,
+    ShowChanDate,
     AlreadyReg,
     Notice,
     Status
@@ -82,6 +84,8 @@ class Listener extends Connecting {
                     if (command === "332") SetTopic(parsed);
                     if (command === "PRIVMSG") PRIVMSG(parsed, client);
                     if (command === "MODE") MODE(parsed);
+                    if(command === "324") ShowChanModes(parsed);
+                    if(command === "329") ShowChanDate(parsed);
                     message.pop();
                 }
             }

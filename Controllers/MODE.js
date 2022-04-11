@@ -64,4 +64,18 @@ function MODE(parsed) {
     }
 }
 
-module.exports = { MODE };
+function ShowChanModes(parsed){
+    const {params, identity} = parsed;
+    const [ channel , modes ] = params.slice(1);
+    Settings[identity][channel.toLowerCase()].logs += `^Y**Channel ${channel} modes: ${modes}^\r\n`;
+}
+
+function ShowChanDate(parsed){
+    const {params, identity} = parsed;
+    const [ channel , milliSec ] = params.slice(1);
+    const setdate = new Date(milliSec * 1000);
+    const date = `${setdate.toDateString()}, ${setdate.toTimeString().split(" ").slice(0,2).join(" ")}`;
+    Settings[identity][channel.toLowerCase()].logs += `^Y**Channel ${channel} created on ${date}^\r\n`;
+}
+
+module.exports = { MODE, ShowChanModes,ShowChanDate };
