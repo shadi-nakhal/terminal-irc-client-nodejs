@@ -43,19 +43,19 @@ docker run -it frankenstein
                    ▐███████▓▓▓▒▒▒▓▓▒▓▓▒▓▓▓▓▓▓▓███████
                   ▓███████████▓▓███████████████████▄
 
-^yflags:
-^y-s [server:port] "server and port"
-^y-n [nickname] "nickname"
-^y-u [username] "username"
-^y-r ["realname"] "realname, must be wraped with quotes"
-^y-c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and separated with a space"
-^y-sp [serverpassword] "server password"
-^y-p [password] "nickname password"
+##flags:
+-s [server:port] "server and port"
+-n [nickname] "nickname"
+-u [username] "username"
+-r ["realname"] "realname, must be wraped with quotes"
+-c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and separated with a space"
+-sp [serverpassword] "server password"
+-p [password] "nickname password"
 
 
-^R/server^
+##/server
 
-options: 
+###options: 
 
 show [name] "shows a specific saved profile"
 
@@ -69,32 +69,29 @@ del [name] "deletes a profile"
 
 usage : /server add libera -s irc.libera.chat:6667 -n Fr4nk -u Frankie -r "monster" -c "#javascript"
 
-^R/connect^
+##/connect
 
-example1 : /connect -s irc.libera:6667 -n Fr4nk -c "#javascript"
-example2 : /connect [profilename]
+###example1 : /connect -s irc.libera:6667 -n Fr4nk -c "#javascript"
+###example2 : /connect [profilename]
 
-^R/query
-^R/close
-^R/join
-^R/kick
-^R/ban
-^R/unban
-^R/op
-^R/deop 
-^R/voice
-^R/devoice
-^R/clear^
-^R/memory^ // check memory
-^R/error^ // invoke connection error
-^R/timeout^ // invoke timeout
-^R/test^ // checks some event listeners for leaks
-^R/quit^
+/query
+/close
+/join
+/kick
+/ban
+/unban
+/op
+/deop 
+/voice
+/devoice
+/clear
+/memory // check memory
+/error // invoke connection error
+/timeout // invoke timeout
+/test // checks some event listeners for leaks
+/quit
 
-^yALT + Q and ALT + A to scroll channels
-^yUP arrow key and Down arrow key to scroll nicknames
-^yPAGE_UP and PAGE_DOWN to scroll Main
-^yTAB to auto complete a nickname
-
-
-press PAGE UP!
+ALT + Q and ALT + A to scroll channels
+UP arrow key and Down arrow key to scroll nicknames
+PAGE_UP and PAGE_DOWN to scroll Main
+TAB to auto complete a nickname
