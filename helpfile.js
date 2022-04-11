@@ -36,7 +36,7 @@ const text = `
 ^y-n [nickname] "nickname"
 ^y-u [username] "username"
 ^y-r ["realname"] "realname, must be wraped with quotes"
-^y-c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and seperated with a space"
+^y-c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and separated with a space"
 ^y-sp [serverpassword] "server password"
 ^y-p [password] "nickname password"
 
@@ -72,6 +72,11 @@ example2 : /connect [profilename]
 ^R/deop 
 ^R/voice
 ^R/devoice
+^R/clear^
+^R/memory^ // check memory
+^R/error^ // invoke connection error
+^R/timeout^ // invoke timeout
+^R/test^ // checks some event listeners for leaks
 ^R/quit^
 
 ^yALT + Q and ALT + A to scroll channels
