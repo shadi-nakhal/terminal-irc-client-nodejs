@@ -37,8 +37,10 @@ function CHANGEDNICK(parsed, identity) { // on NICK command
         return obj;
       });
       Settings[identity][element].logs += `^Y**${EscapeCarets(nickname)} is now known as ${EscapeCarets(newNick)}^\r\n`;
+      
     }
   });
+  Settings[identity].status += `^Y**${EscapeCarets(nickname)} is now known as ${EscapeCarets(newNick)}^\r\n`;
 }
 
 module.exports = { NICKNAMEINUSE, CHANGEDNICK };

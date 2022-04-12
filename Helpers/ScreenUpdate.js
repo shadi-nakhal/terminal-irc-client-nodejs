@@ -40,6 +40,23 @@ function ScreenUpdate() {
             Room.channelz.onParentResize();
           }
         }
+        if(parsed.command === 'NOTICE'){
+          const {identity } = parsed;
+          const joinedChans = Settings[identity].joinedChans;
+          const senderNick = parsed.prefix.includes("!") ? parsed.prefix.split("!")[0] : parsed.prefix;
+          const commonChan = joinedChans.filter((chan) => Settings[identity][chan]['chanNicks'].some((nick) => nick.nickname === senderNick));
+          const highlightChan = commonChan.length > 0 ? commonChan[0] : joinedChans.length > 0 ? joinedChans[0] : undefined;
+          if(highlightChan){
+            const viewed = chanbutt.owner === parsed.identity && chanbutt.name === highlightChan.toLowerCase();
+            let content = viewed ? `^m>${highlightChan}^` : `^m${highlightChan}^`;
+            if (Settings[parsed.identity][highlightChan.toLowerCase()].mentioned) {
+              content = viewed ? `^C>${highlightChan}^` : `^C${highlightChan}^`;
+            }
+            Settings[parsed.identity][highlightChan.toLowerCase()].viewed = viewed;
+            Room.channelz.itemsDef.find((e) => e.id === `${parsed.identity}_${highlightChan.toLowerCase()}`).content = content;
+            Room.channelz.onParentResize();
+          }
+        }
         Room.changePrompt(EscapeCarets(Settings[chanbutt?.owner]?.nickname || ""));
         Update();
       }
