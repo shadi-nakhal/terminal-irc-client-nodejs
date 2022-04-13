@@ -56,9 +56,9 @@ function MODE(parsed) {
         if (parsed.params[0].toLowerCase() === ownNick.toLowerCase()) {
             const { name } = Settings.chanbutt;
             if(Settings.chanbutt.type === 'channel')
-                Settings[identity][name].logs += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${opNick}^\r\n`;
+                Settings[identity][name].logs += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${EscapeCarets(opNick)}^\r\n`;
             if(Settings.chanbutt.type === 'server')
-                Settings[identity].status += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${opNick}^\r\n`;
+                Settings[identity].status += `^Y**${EscapeCarets(opNick)} sets mode ${parsedMode} on ${EscapeCarets(opNick)}^\r\n`;
 
         }
     }
@@ -78,4 +78,19 @@ function ShowChanDate(parsed){
     Settings[identity][channel.toLowerCase()].logs += `^Y**Channel ${channel} created on ${date}^\r\n`;
 }
 
-module.exports = { MODE, ShowChanModes,ShowChanDate };
+
+function ShowBanList(parsed){
+    const {params, identity} = parsed;
+    const [ channel , banned, operator, milliSec ] = params.slice(1);
+    const setdate = new Date(milliSec * 1000);
+    const date = `${setdate.toDateString()}, ${setdate.toTimeString().split(" ").slice(0,2).join(" ")}`;
+    Settings[identity][channel.toLowerCase()].logs += `^Y**${channel}: ${EscapeCarets(banned)} by ${EscapeCarets(operator)} on ${date}^\r\n`;
+}
+function ShowEndOfBanList(parsed){
+    const {params, identity} = parsed;
+    const [channel] = params.slice(1);
+    Settings[identity][channel.toLowerCase()].logs += `^Y**${channel}: End of channel ban list.^\r\n`;
+
+}
+
+module.exports = { MODE, ShowChanModes,ShowChanDate, ShowBanList, ShowEndOfBanList };

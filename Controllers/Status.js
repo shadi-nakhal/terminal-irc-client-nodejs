@@ -23,12 +23,13 @@ function Status(parsed) {
             command === "332" ||
             command === "366" ||
             command === "353" ||
+            command === "367" ||
+            command === "368" ||
             command === "MODE" ||
             command === "PRIVMSG"
         )
     ) {
         Settings[identity].status += `${date}: ${params.slice(1).join(" ")}\r\n`;
-        // console.logger(`${date}: ${params.slice(1).join(" ")}\r\n`);
     }
     Settings[identity].raw += `${date}: ${raw}\r\n`;
 }

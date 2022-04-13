@@ -21,6 +21,8 @@ const {
     MODE,
     ShowChanModes,
     ShowChanDate,
+    ShowBanList,
+    ShowEndOfBanList,
     AlreadyReg,
     Notice,
     Status
@@ -86,6 +88,8 @@ class Listener extends Connecting {
                     if (command === "MODE") MODE(parsed);
                     if(command === "324") ShowChanModes(parsed);
                     if(command === "329") ShowChanDate(parsed);
+                    if(command === "367") ShowBanList(parsed);
+                    if(command === "368") ShowEndOfBanList(parsed);
                     message.pop();
                 }
             }

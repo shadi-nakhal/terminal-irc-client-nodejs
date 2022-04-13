@@ -13,7 +13,7 @@ const { GETNAMES, SHOWNAMES } = require('./Names');
 const { MOTD } = require('./MOTD');
 const { WELCOME, SERVERINFO } = require('./Welcome');
 const { PRIVMSG } = require('./Privmsg');
-const { MODE, ShowChanModes,ShowChanDate } = require('./MODE');
+const { MODE, ShowChanModes,ShowChanDate, ShowBanList,ShowEndOfBanList } = require('./MODE');
 const { HandleKill } = require('./ERROR');
 const { AlreadyReg } = require('./AlreadyReg');
 const { Notice } = require('./NOTICE');
@@ -42,6 +42,8 @@ module.exports = {
   MODE,
   ShowChanModes,
   ShowChanDate,
+  ShowBanList,
+  ShowEndOfBanList,
   HandleKill,
   AlreadyReg,
   Notice,
