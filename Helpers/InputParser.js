@@ -82,7 +82,7 @@ async function InputParser(data) {
         return;
       case '/join':
         channel = incoming[1]?.toLowerCase();
-        if (notFrankenstein) connection.client.write(`JOIN ${channel}\r\n`);
+        if (notFrankenstein && channel) connection.client.write(`JOIN ${channel}\r\n`);
         return;
       case '/quit':
         if (!notFrankenstein) {
@@ -183,10 +183,17 @@ async function InputParser(data) {
         Update();
         return;
       case '/memory':
-         return { data : DisplayInfo(GetmemoryUsage()), command: true};
+         return { data : DisplayInfo(GetMemoryUsage()), command: true};
       case '/clear':
         Clear();
         Update();
+        return;
+      case '/notice':
+        nick = incoming[1];
+        message = incoming.slice(2).join(" ");
+        if (notFrankenstein && nick && message) {
+          connection.client.write(`NOTICE ${nick} ${message}\r\n`);
+        }
         return;
     }
     return { data: `${incoming[0]} is not a command`, command: true };
@@ -218,7 +225,7 @@ function Getlisteners() {
   });
 }
 
-function GetmemoryUsage() {
+function GetMemoryUsage() {
   let memoryObject = {};
   let memoryUsage = process.memoryUsage();
   for (let key in memoryUsage){
