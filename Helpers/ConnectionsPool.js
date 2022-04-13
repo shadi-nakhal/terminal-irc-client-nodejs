@@ -1,6 +1,7 @@
 const Settings = require('../settings');
 
 const { Listener } = require('../Listener');
+const { Room } = require('../Components');
 
 let Pool = [];
 
@@ -11,6 +12,7 @@ function SpinnConnection(instances) {
     newcon.Start();
     Pool.push(newcon);
     channelsToGenerate.push({ type: 'server', name: newcon.server, owner: newcon.identity });
+    Room.GenerateChannels({ type: 'server', name: newcon.server, owner: newcon.identity });
   }
   return channelsToGenerate;
 }

@@ -9,43 +9,42 @@ function FlagsParser(arr) {
   let channels;
 
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === '-s') {
-      if (arr[i + 1] && arr[i + 1].includes(':')) {
-        server = arr[i + 1].split(':')[0];
-        port = arr[i + 1].split(':')[1];
-      } else {
-        return { status: 'error', data: 'invalid server -s followed by server irc.example.net:3333' };
-      }
+    let flag = arr[i].toLowerCase();
+    if (flag === '-s') {
+      if (!arr[i + 1].includes('/'))
+        return GenerateError('invalid server -s followed by server irc.example.net/3333');
+        server = arr[i + 1].split('/')[0];
+        port = arr[i + 1].split('/')[1];
     }
-    if (arr[i] === '-n') {
+    if (flag === '-n') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         nickname = arr[i + 1];
       } else {
-        return { status: 'error', data: 'invalid nickname' };
+        return GenerateError('invalid nickname');
       }
     }
-    if (arr[i] === '-u') {
+    if (flag === '-u') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         user = arr[i + 1];
       } else {
-        return { status: 'error', data: 'invalid user' };
+        return GenerateError('invalid user');
       }
     }
-    if (arr[i] === '-p') {
+    if (flag === '-p') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         password = arr[i + 1];
       } else {
-        return { status: 'error', data: 'invalid password' };
+        return GenerateError('invalid password');
       }
     }
-    if (arr[i] === '-sp') {
+    if (flag === '-sp') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         serverpassword = arr[i + 1];
       } else {
-        return { status: 'error', data: 'invalid server password' };
+        return GenerateError('invalid server password');
       }
     }
-    if (arr[i] === '-r') {
+    if (flag === '-r') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         if (arr[i + 1].includes('"')) {
           const firstIndex = i + 1; // finding 1st quote
@@ -55,10 +54,10 @@ function FlagsParser(arr) {
           realname = secondIndex ? arr.slice(firstIndex, secondIndex).join(' ').slice(1, -1) : arr[i + 1].slice(1, -1); // ternary if theres
         } // a second word with quote be it if not then be the 1st word with quote
       } else {
-        return { status: 'error', data: 'invalid realname' };
+        return GenerateError('invalid realname');
       }
     }
-    if (arr[i] === '-c') {
+    if (flag === '-c') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         if (arr[i + 1].includes('"')) {
           const firstIndex = i + 1; // finding 1st quote
@@ -68,7 +67,7 @@ function FlagsParser(arr) {
           channels = secondIndex ? arr.slice(firstIndex, secondIndex).join(' ').slice(1, -1).split(' ') : [arr[i + 1].slice(1, -1)]; // ternary if theres
         } // a second word with quote be it if not then be the 1st word with quote
       } else {
-        return { status: 'error', data: 'invalid channels' };
+        return GenerateError('invalid channels');
       }
     }
   }
@@ -76,6 +75,11 @@ function FlagsParser(arr) {
   return {
     server, port, nickname, user, realname, password, serverpassword, channels
   };
+}
+
+
+function GenerateError(message){
+  return new Error(message);
 }
 
 module.exports = { FlagsParser };

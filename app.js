@@ -43,8 +43,8 @@ function ChannelButton(channalButton) {
 }
 
 async function onInputSubmit(value) {
-    const inputmsg = await InputParser(value);
     try {
+        const inputmsg = await InputParser(value);
         let data;
         if (inputmsg && inputmsg.data) {
             data = await inputmsg.data;

@@ -30,18 +30,14 @@ async function InputParser(data) {
           return { data: err, command: true };
         }
       case '/connect':
+        message = await ConnectCommand(incoming);
         try {
-          const {
-            server, port, user, realname, nickname, channels
-          } = await ConnectCommand(incoming);
-          const spinnedServer = SpinnConnection([{
-            server, port, user, realname, nickname, channels
-          }]);
-          spinnedServer.map((chan) => Room.GenerateChannels(chan));
+          const {server, port, user, realname, nickname, channels} = message;
+          SpinnConnection([{server, port, user, realname, nickname, channels}]);
           ScreenUpdate();
           return;
-        } catch (err) {
-          return { data: err, command: true };
+        } catch(err){
+          return { data: message, command: true };
         }
       case '/part':
         if (chanbutt?.type === 'channel') {

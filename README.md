@@ -9,7 +9,7 @@ docker build -t frankenstein . <---- dont forget the dot!
 docker run -it frankenstein
 ```
 ## flags:
-* -s [server:port] "server and port".
+* -s [server/port] "server and port".
 * -n [nickname] "nickname".
 * -u [username] "username".
 * -r ["realname"] "realname, must be wraped with quotes".
@@ -28,11 +28,11 @@ docker run -it frankenstein
 * add [name] "adds a profile".
 * del [name] "deletes a profile".
 
-##### usage : /server add libera -s irc.libera.chat:6667 -n Fr4nk -u Frankie -r "monster" -c "#javascript"
+##### usage : /server add libera -s irc.libera.chat/6667 -n Fr4nk -u Frankie -r "monster" -c "#javascript"
 
 ## /connect
 
-### example1 : /connect -s irc.libera:6667 -n Fr4nk -c "#javascript"
+### example1 : /connect -s irc.libera/6667 -n Fr4nk -c "#javascript"
 ### example2 : /connect [profilename]
 
 * /query

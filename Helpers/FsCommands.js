@@ -2,7 +2,7 @@ const { FlagsParser } = require('./FlagsParser');
 const { HandleFs } = require('./HandleFs');
 const { fsActions } = require('./FsActions');
 
-function ConnectCommand(incoming) {
+async function ConnectCommand(incoming) {
   if (Array.isArray(incoming) && incoming.length > 1) {
     if (incoming.length === 2) {
       const data = HandleFs({
