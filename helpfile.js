@@ -32,7 +32,7 @@ const text = `
                   ▓███████████▓▓███████████████████▄
 
 ^yflags:
-^y-s [server:port] "server and port"
+^y-s [server/port] "server and port"
 ^y-n [nickname] "nickname"
 ^y-u [username] "username"
 ^y-r ["realname"] "realname, must be wraped with quotes"
@@ -55,11 +55,11 @@ add [name] "adds a profile"
 
 del [name] "deletes a profile"
 
-usage : /server add libera -s irc.libera.chat:6667 -n Fr4nk -u Frankie -r "monster" -c "#javascript"
+usage : /server add libera -s irc.libera.chat/6667 -n Fr4nk -u Frankie -r "monster" -c "#javascript"
 
 ^R/connect^
 
-example1 : /connect -s irc.libera:6667 -n Fr4nk -c "#javascript"
+example1 : /connect -s irc.libera/6667 -n Fr4nk -c "#javascript"
 example2 : /connect [profilename]
 
 ^R/query

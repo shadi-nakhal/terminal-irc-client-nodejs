@@ -2,7 +2,7 @@ const net = require('net');
 const Settings = require('./settings');
 
 class Connecting {
-  constructor(server, port, user, realname, nickname, channels) {
+  constructor(server, port, user, realname, nickname, channels, tls) {
     this.nickname = Settings[this.identity]?.nickname || nickname || Settings.nicknames[0];
     this.server = server;
     this.port = port;
@@ -10,11 +10,13 @@ class Connecting {
     this.user = user || Settings.USER;
     this.realname = realname || Settings.realname;
     this.connecting = false;
+    this.tls = tls;
     this.MakeIdentity();
     this.CreateSettings();
   }
 
   Connect() {
+    console.logger(this.tls);
     const client = new net.Socket();
     this.client = client;
     this.preError = true;

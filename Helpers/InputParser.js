@@ -32,8 +32,8 @@ async function InputParser(data) {
       case '/connect':
         message = await ConnectCommand(incoming);
         try {
-          const {server, port, user, realname, nickname, channels} = message;
-          SpinnConnection([{server, port, user, realname, nickname, channels}]);
+          const {server, port, user, realname, nickname, channels, tls} = message;
+          SpinnConnection([{server, port, user, realname, nickname, channels, tls}]);
           ScreenUpdate();
           return;
         } catch(err){

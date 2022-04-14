@@ -30,8 +30,8 @@ const {
 const { Connecting } = require("./Connection");
 
 class Listener extends Connecting {
-    constructor({ server, port, user, realname, nickname, channels }) {
-        super(server, port, user, realname, nickname, channels);
+    constructor({ server, port, user, realname, nickname, channels, tls }) {
+        super(server, port, user, realname, nickname, channels, tls);
     }
 
     Start() {

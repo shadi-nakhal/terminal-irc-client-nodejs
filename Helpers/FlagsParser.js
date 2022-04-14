@@ -7,6 +7,7 @@ function FlagsParser(arr) {
   let password;
   let serverpassword;
   let channels;
+  let tls = false;
 
   for (let i = 0; i < arr.length; i++) {
     let flag = arr[i].toLowerCase();
@@ -23,6 +24,9 @@ function FlagsParser(arr) {
         return GenerateError('invalid nickname');
       }
     }
+    if (flag === '-t') {
+        tls = true;
+      }
     if (flag === '-u') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         user = arr[i + 1];
@@ -71,9 +75,8 @@ function FlagsParser(arr) {
       }
     }
   }
-
   return {
-    server, port, nickname, user, realname, password, serverpassword, channels
+    server, port, nickname, user, realname, password, serverpassword, channels, tls
   };
 }
 

@@ -27,6 +27,7 @@ function ServerCommand(incoming) {
     realname,
     password,
     serverpassword,
+    tls,
     channels
   } = FlagsParser(incoming);
   const config = {};
@@ -42,6 +43,7 @@ function ServerCommand(incoming) {
           password,
           serverpassword,
           channels,
+          tls,
           action: fsActions.add
         };
         const data = HandleFs(config);

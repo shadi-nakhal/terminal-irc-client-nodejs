@@ -48,7 +48,7 @@ function PRIVMSG(parsed, client) {
   }
 
   if (parsed.params[1] === '\x01VERSION\x01') {
-    MsgThroatle(senderNickname, '\u0001VERSION Frankenstein\'s client 1.0\u0001');
+    MsgThroatle(senderNickname, '\u0001VERSION Frankenstein 1.0\u0001');
   }
 
   if (parsed.params[1] === '\x01PING\x01' || parsed.params[1] === '\x01PING') {
