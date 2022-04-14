@@ -9,7 +9,7 @@ function CreateError(message) {
 
 function HandleFs(config) {
   // Internal function
-  const _writeConfig = (configJson) => {
+  const _writeConfig = (configJson, callback) => {
     fs.writeFile(
       'config.json',
       JSON.stringify(configJson, null, 2),
@@ -19,11 +19,7 @@ function HandleFs(config) {
         flag: 'w'
       },
       (err) => {
-        if (err) {
-          return err;
-        } else {
-          return null;
-        }
+        callback(err);
       }
     );
   };
@@ -60,24 +56,26 @@ function HandleFs(config) {
               ...jsonFile,
               ...config
             };
-            _writeConfig(newjsonFile, (err) => {
+            const callback = function(err) {
               if (err) {
                 reject(err);
               } else {
                 resolve(`${serverName} is added`);
               }
-            });
+            };
+            _writeConfig(newjsonFile, callback);
           } else if (config[serverName].action === fsActions.del) {
             if (jsonFile[serverName]) {
               delete jsonFile[serverName];
               newjsonFile = jsonFile;
-              _writeConfig(newjsonFile, (err) => {
+              const callback = function(err) {
                 if (err) {
                   reject(err);
                 } else {
                   resolve(`${serverName} is deleted`);
                 }
-              });
+              };
+              _writeConfig(newjsonFile, callback);
             } else {
               reject(CreateError('server not found'));
             }
