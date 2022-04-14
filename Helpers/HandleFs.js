@@ -1,4 +1,5 @@
 const fs = require('fs');
+const process = require('process');
 const { fsActions } = require('./FsActions');
 
 function CreateError(message) {
@@ -7,68 +8,102 @@ function CreateError(message) {
 }
 
 function HandleFs(config) {
+  // Internal function
+  const _writeConfig = (configJson, callback) => {
+    fs.writeFile(
+      'config.json',
+      JSON.stringify(configJson, null, 2),
+      {
+        encoding: 'utf8',
+        mode: 0o600,
+        flag: 'w'
+      },
+      (err) => {
+        callback(err);
+      }
+    );
+  };
   const promise = new Promise((resolve, reject) => {
     const serverName = Object.keys(config);
-    fs.open('config.json', 'wx', (err, fd) => {
+    fs.readFile('config.json', (err, file) => {
       if (err) {
-        if (err.code !== 'EEXIST') {
-          return reject(CreateError('error fs.open'));
-        }
-        fs.readFile('config.json', (err, file) => {
-          if (err) reject(err);
-          let newjsonFile;
-          let jsonFile = {};
-          if (file.length > 0) {
-            try {
-              jsonFile = JSON.parse(file);
-            } catch (err) {
-              return reject(CreateError('error parsing json file'));
-            }
+        reject(err);
+      } else {
+        let newjsonFile;
+        let jsonFile;
+        if (file.length > 0) {
+          try {
+            jsonFile = JSON.parse(file);
+          } catch (err) {
+            console.logger(err.toString() || err);
+            jsonFile = null;
           }
+        }
+        if (jsonFile == null) {
+          reject(CreateError('error parsing json file'));
+        } else {
           if (config[serverName].action === fsActions.show) {
             if (jsonFile[serverName]) {
-              return resolve(jsonFile[serverName]);
+              resolve(jsonFile[serverName]);
+            } else if (serverName[0] === fsActions.showAll || serverName[0] === fsActions.all) {
+              resolve(jsonFile);
+            } else {
+              reject(CreateError('server not found'));
             }
-            if (serverName[0] === fsActions.showAll || serverName[0] === fsActions.all) {
-              return resolve(jsonFile);
-            }
-            return reject(CreateError('server not found'));
-          }
-          if (config[serverName].action === fsActions.add) {
+          } else if (config[serverName].action === fsActions.add) {
             delete config[serverName].action;
             newjsonFile = {
               ...jsonFile,
               ...config
             };
-            resolve(`${serverName} is added`);
-          }
-          if (config[serverName].action === fsActions.del) {
+            const callback = function(err) {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(`${serverName} is added`);
+              }
+            };
+            _writeConfig(newjsonFile, callback);
+          } else if (config[serverName].action === fsActions.del) {
             if (jsonFile[serverName]) {
               delete jsonFile[serverName];
               newjsonFile = jsonFile;
-              resolve(`${serverName} is deleted`);
+              const callback = function(err) {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(`${serverName} is deleted`);
+                }
+              };
+              _writeConfig(newjsonFile, callback);
             } else {
-              return reject(CreateError('server not found'));
+              reject(CreateError('server not found'));
             }
           }
-          const newData = JSON.stringify(newjsonFile, null, 2);
-          fs.writeFile('config.json', newData, (err) => {
-            if (err) reject(err);
-          });
-        });
-        return;
-      }
-      const newData = JSON.stringify({});
-      fs.writeFile('config.json', newData, (err) => {
-        if (err) reject(err);
-      });
-      fs.close(fd, (err) => {
-        if (err) reject(err);
-      });
-      return resolve('file is initialized and is empty');
-    });
-  });
+        } // if not JSON error error
+      } // if not file read error
+    }); // fs.readFile()
+  }); // new Promise()
   return promise;
+}
+
+try {
+  if (!fs.existsSync('config.json')) {
+    console.log('Config file not found, creating config.json');
+    fs.writeFileSync(
+      'config.json',
+      '{}\n',
+      {
+        encoding: 'utf8',
+        mode: 0o600,
+        flag: 'w'
+      }
+    );
+  }
+} catch (err) {
+  console.log('Unable to create config.json');
+  console.log(err.toString() || err);
+  process.exit(1);
 }
 
 module.exports = { HandleFs };
