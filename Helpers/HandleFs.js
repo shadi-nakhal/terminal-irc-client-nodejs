@@ -9,12 +9,12 @@ function CreateError(message) {
 function HandleFs(config) {
   const promise = new Promise((resolve, reject) => {
     const serverName = Object.keys(config);
-    fs.open('mynewfile1.json', 'wx', (err, fd) => {
+    fs.open('config.json', 'wx', (err, fd) => {
       if (err) {
         if (err.code !== 'EEXIST') {
           return reject(CreateError('error fs.open'));
         }
-        fs.readFile('mynewfile1.json', (err, file) => {
+        fs.readFile('config.json', (err, file) => {
           if (err) reject(err);
           let newjsonFile;
           let jsonFile = {};
@@ -52,14 +52,14 @@ function HandleFs(config) {
             }
           }
           const newData = JSON.stringify(newjsonFile, null, 2);
-          fs.writeFile('mynewfile1.json', newData, (err) => {
+          fs.writeFile('config.json', newData, (err) => {
             if (err) reject(err);
           });
         });
         return;
       }
       const newData = JSON.stringify({});
-      fs.writeFile('mynewfile1.json', newData, (err) => {
+      fs.writeFile('config.json', newData, (err) => {
         if (err) reject(err);
       });
       fs.close(fd, (err) => {
