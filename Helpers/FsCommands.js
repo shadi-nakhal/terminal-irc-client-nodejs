@@ -77,6 +77,7 @@ function ServerCommand(incoming) {
     default:
       return `/server ${incoming[1]} is not a command`;
   }
+  return `Incorrect Entry`;
 }
 
 module.exports = { ServerCommand, ConnectCommand };

@@ -51,6 +51,9 @@ function HandleFs(config) {
               reject(CreateError('server not found'));
             }
           } else if (config[serverName].action === fsActions.add) {
+            if(serverName[0].length < 3){
+              reject(CreateError("Profile name should be bigger than 3 chars."));
+            }
             delete config[serverName].action;
             newjsonFile = {
               ...jsonFile,

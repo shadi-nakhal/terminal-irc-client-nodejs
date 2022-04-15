@@ -8,10 +8,9 @@ function FlagsParser(arr) {
   let serverpassword;
   let channels;
   let tls = false;
-
   for (let i = 0; i < arr.length; i++) {
     let flag = arr[i].toLowerCase();
-    if (flag === '-s') {
+    if (flag === '-s' && arr[i + 1]) {
       if (!arr[i + 1].includes('/'))
         return GenerateError('invalid server -s followed by server irc.example.net/3333');
         server = arr[i + 1].split('/')[0];
