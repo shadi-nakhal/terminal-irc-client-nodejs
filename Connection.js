@@ -1,8 +1,9 @@
 const net = require('net');
+const tls = require('tls');
 const Settings = require('./settings');
 
 class Connecting {
-  constructor(server, port, user, realname, nickname, channels, tls) {
+  constructor(server, port, user, realname, nickname, channels, tlsFlag) {
     this.nickname = Settings[this.identity]?.nickname || nickname || Settings.nicknames[0];
     this.server = server;
     this.port = port;
@@ -10,19 +11,22 @@ class Connecting {
     this.user = user || Settings.USER;
     this.realname = realname || Settings.realname;
     this.connecting = false;
-    this.tls = tls;
+    this.tlsFlag = tlsFlag;
     this.MakeIdentity();
     this.CreateSettings();
+    this.options = {
+      rejectUnauthorized: false
+    };
   }
 
+
   Connect() {
-    console.logger(this.tls);
-    const client = new net.Socket();
+    const client = this.tlsFlag ? new tls.TLSSocket() : new net.Socket();
     this.client = client;
     this.preError = true;
     client.setTimeout(80000);
     const connect = () => {
-      client.connect(this.port, this.server);
+      client.connect(this.port, this.server, this.options);
       client.setTimeout(80000);
       this.connecting = false;
       Settings[this.identity].PassedMOTD = false;
@@ -85,7 +89,7 @@ class Connecting {
     client.on('connect', connectHandler);
     client.on('timeout', Timeout);
     client.on('close', Close);
-
+   
     connect();
   }
 
