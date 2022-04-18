@@ -16,6 +16,7 @@ docker run -it frankenstein
 * -c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and separated with a space".
 * -sp [serverpassword] "server password". // Not working yet..
 * -p [password] "nickname password". // Not working yet..
+* -t "use tls connection".
 
 
 ## /server

@@ -39,6 +39,7 @@ const text = `
 ^y-c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and separated with a space"
 ^y-sp [serverpassword] "server password"
 ^y-p [password] "nickname password"
+^y-t "use tls connection".
 
 
 ^R/server^
