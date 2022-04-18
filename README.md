@@ -14,8 +14,8 @@ docker run -it frankenstein
 * -u [username] "username".
 * -r ["realname"] "realname, must be wraped with quotes".
 * -c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and separated with a space".
-* -sp [serverpassword] "server password".
-* -p [password] "nickname password".
+* -sp [serverpassword] "server password". // Not working yet..
+* -p [password] "nickname password". // Not working yet..
 
 
 ## /server
@@ -50,7 +50,7 @@ docker run -it frankenstein
 * /memory // check memory
 * /error // invoke connection error
 * /timeout // invoke timeout
-* /test // checks some event listeners for leaks
+* /test // logs some event listeners and logs them into outputlog.txt to check for leaks
 * /raw // toggle server's status buffer tag view to raw
 * /quit
 
