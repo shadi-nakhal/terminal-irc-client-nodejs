@@ -5,7 +5,7 @@ const {
 const { DisplayInfo } = require('./DisplayInfo');
 const { Room } = require('../Components');
 const { term } = require('../Dom');
-const { ScreenUpdate } = require('./ScreenUpdate');
+// const { ScreenUpdate } = require('./ScreenUpdate');
 const { Update, Clear} = require('./Update');
 const process = require('process');
 
@@ -34,9 +34,10 @@ async function InputParser(data) {
         try {
           const {server, port, user, realname, nickname, channels, tls} = message;
           SpinnConnection([{server, port, user, realname, nickname, channels, tls}]);
-          ScreenUpdate();
+          // ScreenUpdate();
           return;
         } catch(err){
+          console.logger(err);
           return { data: message, command: true };
         }
       case '/part':

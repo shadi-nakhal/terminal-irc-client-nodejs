@@ -1,13 +1,13 @@
 const { EscapeCarets } = require('./EscapeCarets');
-const { connectionsPool } = require('./ConnectionsPool');
+// const { connectionsPool } = require('./ConnectionsPool');
 const { Update } = require('./Update');
 const { Room } = require('../Components');
 const { term } = require('../Dom');
 const Settings = require('../settings');
 const IrcParser = require('./IrcParser');
 
-function ScreenUpdate() {
-  connectionsPool().forEach((connection) => {
+function ScreenUpdate(connection) {
+  // connectionsPool.forEach((connection) => {
     function UpdateScreen(data) {
       const { chanbutt } = Settings;
       data = data.toString().trim();
@@ -67,7 +67,7 @@ function ScreenUpdate() {
       connection.client.on('error', Update);
       connection.UpdateScreen = true;
     }
-  });
+  // });
   term.hideCursor(true);
 }
 
