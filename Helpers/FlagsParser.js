@@ -8,6 +8,7 @@ function FlagsParser(arr) {
   let serverpassword;
   let channels;
   let tls = false;
+  let rejectUnauthorized = false;
   for (let i = 0; i < arr.length; i++) {
     let flag = arr[i].toLowerCase();
     if (flag === '-s' && arr[i + 1]) {
@@ -26,6 +27,9 @@ function FlagsParser(arr) {
     if (flag === '-t') {
         tls = true;
       }
+    if (flag === '-a') {
+      rejectUnauthorized = true;
+    }
     if (flag === '-u') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         user = arr[i + 1];
@@ -33,14 +37,14 @@ function FlagsParser(arr) {
         return GenerateError('invalid user');
       }
     }
-    if (flag === '-p') {
+    if (flag === '-i') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         password = arr[i + 1];
       } else {
         return GenerateError('invalid password');
       }
     }
-    if (flag === '-sp') {
+    if (flag === '-p') {
       if (arr[i + 1] && arr[i + 1].length > 2) {
         serverpassword = arr[i + 1];
       } else {
@@ -75,7 +79,7 @@ function FlagsParser(arr) {
     }
   }
   return {
-    server, port, nickname, user, realname, password, serverpassword, channels, tls
+    server, port, nickname, user, realname, password, serverpassword, channels, tls, rejectUnauthorized
   };
 }
 

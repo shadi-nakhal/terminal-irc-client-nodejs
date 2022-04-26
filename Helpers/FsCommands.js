@@ -28,6 +28,7 @@ function ServerCommand(incoming) {
     password,
     serverpassword,
     tls,
+    rejectUnauthorized,
     channels
   } = FlagsParser(incoming);
   const config = {};
@@ -44,6 +45,7 @@ function ServerCommand(incoming) {
           serverpassword,
           channels,
           tls,
+          rejectUnauthorized,
           action: fsActions.add
         };
         const data = HandleFs(config);

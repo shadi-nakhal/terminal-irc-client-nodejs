@@ -37,10 +37,13 @@ const text = `
 ^y-u [username] "username"
 ^y-r ["realname"] "realname, must be wraped with quotes"
 ^y-c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and separated with a space"
-^y-sp [serverpassword] "server password"
-^y-p [password] "nickname password"
+^y-p [serverpassword] "server password"
+^y-i [password] "nickname password for NickServe auto identification"
 ^y-t "use tls connection".
+^y-a "reject invalid certificates"^ its false by default.
 
+
+^RWarning all passwords are stored as plain text!^
 
 ^R/server^
 
@@ -57,6 +60,8 @@ add [name] "adds a profile"
 del [name] "deletes a profile"
 
 usage : /server add libera -s irc.libera.chat/6667 -n Fr4nk -u Frankie -r "monster" -c "#javascript"
+
+^RWarning all passwords are stored as plain text!^
 
 ^R/connect^
 
@@ -75,10 +80,12 @@ example2 : /connect [profilename]
 ^R/devoice
 ^R/clear^
 ^R/mode^
+^R/ns^ /ns identify nickname password
 ^R/memory^ check memory
 ^R/error^ invoke connection error
 ^R/timeout^ invoke timeout
 ^R/test^ checks some event listeners for leaks
+^R/test2^ checks tls socket
 ^R/raw^ toggle server's status buffer tag view to raw
 ^R/quit^
 

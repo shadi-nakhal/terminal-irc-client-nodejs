@@ -14,10 +14,12 @@ docker run -it frankenstein
 * -u [username] "username".
 * -r ["realname"] "realname, must be wraped with quotes".
 * -c ["#channel1 #channel2"] "channels to be joined on connect, must be wraped with quotes and separated with a space".
-* -sp [serverpassword] "server password". // Not working yet..
-* -p [password] "nickname password". // Not working yet..
+* -p [serverpassword] "server password".
+* -i [password] "nickname password for NickServe auto identification".
 * -t "use tls connection".
+* -a "reject invalid certificates" // its false by default.
 
+<span style="color:red">Warning all passwords are stored as plain text!</span>
 
 ## /server
 
@@ -30,6 +32,10 @@ docker run -it frankenstein
 * del [name] "deletes a profile".
 
 ##### usage : /server add libera -s irc.libera.chat/6667 -n Fr4nk -u Frankie -r "monster" -c "#javascript"
+
+
+<span style="color:red">Warning all passwords are stored as plain text!</span>
+
 
 ## /connect
 
@@ -48,11 +54,13 @@ docker run -it frankenstein
 * /devoice
 * /clear
 * /mode
-* /memory // check memory
-* /error // invoke connection error
-* /timeout // invoke timeout
-* /test // logs some event listeners and logs them into outputlog.txt to check for leaks
-* /raw // toggle server's status buffer tag view to raw
+* /ns // /ns identify nickname password.
+* /memory // check memory.
+* /error // invoke connection error.
+* /timeout // invoke timeout.
+* /test // checks event listeners for leaks.
+* /test // checks tls socket.
+* /raw // toggle server's status buffer tag view to raw.
 * /quit
 
 ## navigation

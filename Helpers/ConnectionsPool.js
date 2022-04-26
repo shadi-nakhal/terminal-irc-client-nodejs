@@ -1,6 +1,6 @@
 const Settings = require('../settings');
 
-const { Listener } = require('../Listener');
+const { Connection } = require('../Connection');
 const { Room } = require('../Components');
 const { ScreenUpdate } = require("./ScreenUpdate");
 
@@ -9,7 +9,7 @@ let Pool = [];
 function SpinnConnection(instances) {
   const channelsToGenerate = [];
   for (const i of instances) {
-    const newcon = new Listener(i);
+    const newcon = new Connection(i);
     newcon.Start();
     Pool.push(newcon);
     ScreenUpdate(newcon);
