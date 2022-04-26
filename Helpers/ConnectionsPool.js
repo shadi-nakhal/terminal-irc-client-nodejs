@@ -1,16 +1,18 @@
 const Settings = require('../settings');
 
-const { Listener } = require('../Listener');
+const { Connection } = require('../Connection');
 const { Room } = require('../Components');
+const { ScreenUpdate } = require("./ScreenUpdate");
 
 let Pool = [];
 
 function SpinnConnection(instances) {
   const channelsToGenerate = [];
   for (const i of instances) {
-    const newcon = new Listener(i);
+    const newcon = new Connection(i);
     newcon.Start();
     Pool.push(newcon);
+    ScreenUpdate(newcon);
     channelsToGenerate.push({ type: 'server', name: newcon.server, owner: newcon.identity });
     Room.GenerateChannels({ type: 'server', name: newcon.server, owner: newcon.identity });
   }
@@ -34,10 +36,15 @@ function FindCon(identity) {
   return con;
 }
 
+function ReStartTls(identity) {
+  const con = Pool.find((pro) => pro.identity === identity);
+  con.Start();
+}
+
 function connectionsPool() {
   return Pool;
 }
 
 module.exports = {
-  SpinnConnection, FindCon, RemoveCon, connectionsPool
+  SpinnConnection, FindCon, RemoveCon, connectionsPool, ReStartTls
 };

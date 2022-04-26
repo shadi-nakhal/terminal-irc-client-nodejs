@@ -5,7 +5,6 @@ const {
 const { DisplayInfo } = require('./DisplayInfo');
 const { Room } = require('../Components');
 const { term } = require('../Dom');
-const { ScreenUpdate } = require('./ScreenUpdate');
 const { Update, Clear} = require('./Update');
 const process = require('process');
 
@@ -32,11 +31,10 @@ async function InputParser(data) {
       case '/connect':
         message = await ConnectCommand(incoming);
         try {
-          const {server, port, user, realname, nickname, channels, tls} = message;
-          SpinnConnection([{server, port, user, realname, nickname, channels, tls}]);
-          ScreenUpdate();
+          SpinnConnection([message]);
           return;
         } catch(err){
+          console.logger(err);
           return { data: message, command: true };
         }
       case '/part':
@@ -166,8 +164,7 @@ async function InputParser(data) {
         }
         return;
       case '/test':
-        Getlisteners();
-        return;
+        return { data : DisplayInfo(Getlisteners(connection)), command: true};
       case '/error':
         connection.client.emit('error', 'invoked error');
         return;
@@ -191,7 +188,13 @@ async function InputParser(data) {
           connection.client.write(`NOTICE ${nick} ${message}\r\n`);
         }
         return;
-    }
+      case '/ns':
+        message = incoming.slice(1).join(" ");
+        connection.client.write(`ns ${message}\r\n`);
+        return;
+      case '/test2':
+        return { data : DisplayInfo(ConnectionOptions(connection)), command: true};
+            }
     return { data: `${incoming[0]} is not a command`, command: true };
   }
 
@@ -210,15 +213,22 @@ function ParseIncoming(incoming, chanbutt) {
   return { channel, subject };
 }
 
-function Getlisteners() {
-  connectionsPool().forEach((con) => {
-    console.logger(con.client.listeners('data'), 'listening on data');
-    console.logger(con.client.listenerCount('data'), 'data listeners');
-    console.logger(con.client.listenerCount('timeout'), 'timeout listeners');
-    console.logger(con.client.eventNames(), 'event names');
-    console.logger(connectionsPool().length, 'connections');
-    console.logger('-----------------------');
-  });
+function Getlisteners(connection) {
+  if (connection) return {
+  'data listeners' : connection.client.listenerCount('data'),
+  'event names' : connection.client.eventNames(),
+  'connections count' : connectionsPool().length
+  };
+}
+
+function ConnectionOptions(connection){
+  if (connection.options) return {
+    'host:port' : `${connection.options.host}:${connection.options.port}`,
+    'options' : `${JSON.stringify(connection.options)}`,
+    'encrypted' : connection.client.encrypted,
+    'authorized':connection.client.authorized,
+    'authorizationError':connection.client.authorizationError
+  };
 }
 
 function GetMemoryUsage() {
