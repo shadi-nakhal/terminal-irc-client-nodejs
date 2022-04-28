@@ -26,10 +26,15 @@ function Status(parsed) {
             command === "367" ||
             command === "368" ||
             command === "MODE" ||
+            command === "ERROR" ||
             command === "PRIVMSG"
         )
     ) {
+        try{ 
         Settings[identity].status += `${date}: ${params.slice(1).join(" ")}\r\n`;
+        }catch(err){
+            Settings[identity].status += `^R${date}: ${raw}^\r\n`;
+        }
     }
     Settings[identity].raw += `${date}: ${raw}\r\n`;
 }

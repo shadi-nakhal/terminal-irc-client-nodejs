@@ -10,6 +10,7 @@ function parser(data, identity) {
         message.command = splitdata[0];
         message.params = splitdata[1];
         message.identity = identity;
+        return message;
     }
     message.prefix = splitdata[0].replace(":", "");
     message.command = splitdata[1];

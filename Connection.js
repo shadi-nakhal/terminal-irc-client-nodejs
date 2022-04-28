@@ -97,7 +97,7 @@ class Connection extends Listener {
       if (!this.connecting) {
         this.connecting = true;
         Settings[this.identity].joinedChans.forEach((chan) => {
-          Settings[this.identity][chan.toLowerCase()].logs += '^RReconnecting...^\r\n';
+          Settings[this.identity][chan.toLowerCase()].logs += `^R${err} Reconnecting...^\r\n`;
           Settings[this.identity][chan.toLowerCase()].chanNicks = [];
         });
       }
