@@ -32,7 +32,7 @@ function ScreenUpdate(connection) {
             const channel = parsed.params[0].toLowerCase();
             const viewed = chanbutt.owner === parsed.identity && chanbutt.name === channel;
             let content = viewed ? `^m>${parsed.params[0]}^` : `^m${parsed.params[0]}^`;
-            if (Settings[parsed.identity][channel].mentioned) {
+            if (Settings[parsed.identity][channel]?.mentioned) {
               content = viewed ? `^C>${parsed.params[0]}^` : `^C${parsed.params[0]}^`;
             }
             Settings[parsed.identity][channel].viewed = viewed;
