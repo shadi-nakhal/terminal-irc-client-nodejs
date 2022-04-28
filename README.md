@@ -59,7 +59,7 @@ docker run -it frankenstein
 * /error // invoke connection error.
 * /timeout // invoke timeout.
 * /test // checks event listeners for leaks.
-* /test // checks tls socket.
+* /test2 // checks tls socket.
 * /raw // toggle server's status buffer tag view to raw.
 * /quit
 
